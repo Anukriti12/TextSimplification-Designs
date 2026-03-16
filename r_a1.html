@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Activity 1: Reading Level</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC;--gold:#E9A03B}
+html,body{height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--teal)}
+.banner-left{display:flex;align-items:center;gap:10px}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-mid)}
+.b-title{font-size:13px;font-weight:600;color:#fff}
+.b-sep{color:rgba(255,255,255,.2)}
+.b-desc{font-size:11px;color:rgba(255,255,255,.4);max-width:380px;text-align:right;line-height:1.4}
+.tabs{background:#162130;display:flex;padding:0 40px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:45px;z-index:299}
+.tab{padding:13px 26px 11px;font-size:13px;font-weight:600;color:rgba(255,255,255,.35);cursor:pointer;border-bottom:3px solid transparent;display:flex;align-items:center;gap:8px;user-select:none;transition:color .15s}
+.tab:hover{color:rgba(255,255,255,.65)}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.d-blue{background:#3B82F6}.d-yellow{background:#F59E0B}.d-green{background:var(--teal)}
+.tab.t-blue.active{color:#93C5FD;border-bottom-color:#3B82F6}
+.tab.t-yellow.active{color:#FCD34D;border-bottom-color:#F59E0B}
+.tab.t-green.active{color:#6EE7B7;border-bottom-color:var(--teal)}
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);display:flex;flex-direction:column;min-height:calc(100vh - 96px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);flex-shrink:0}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+.step-info{font-size:12px;color:var(--teal-mid);font-weight:500}
+.doc-header{background:var(--navy);padding:22px 40px 26px;border-top:1px solid rgba(255,255,255,.07)}
+.doc-lbl{display:inline-flex;align-items:center;gap:6px;background:rgba(42,157,143,.18);border:1px solid rgba(42,157,143,.4);color:var(--teal-mid);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.doc-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.doc-header h1{font-family:'Lora',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.25}
+.doc-sub{font-size:13px;color:rgba(255,255,255,.5)}
+.level-pill{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:.05em;margin-top:12px}
+.pill-blue{background:rgba(59,130,246,.18);color:#93C5FD;border:1px solid rgba(59,130,246,.35)}
+.pill-yellow{background:rgba(245,158,11,.18);color:#FCD34D;border:1px solid rgba(245,158,11,.35)}
+.pill-green{background:rgba(42,157,143,.18);color:#6EE7B7;border:1px solid rgba(42,157,143,.35)}
+.scroll{flex:1;overflow-y:auto;padding:36px 40px 28px}
+.pane{display:none}.pane.active{display:block}
+.s-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.s-head{font-family:'Lora',serif;font-size:20px;font-weight:700;color:var(--navy);padding-bottom:10px;border-bottom:2px solid var(--teal-light);margin-bottom:4px}
+.p{font-family:'Lora',serif;font-size:16.5px;line-height:1.85;color:var(--text);margin-top:14px}
+.p-plain{font-family:'DM Sans',sans-serif;font-size:17px;line-height:1.9;color:var(--text);margin-top:14px}
+.divider{border:none;border-top:1px dashed var(--border);margin:26px 0}
+.steps-list{list-style:none;padding:0;margin-top:16px}
+.step-row{display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #EFEFEA}
+.step-row:last-child{border-bottom:none}
+.sn{min-width:36px;height:36px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;margin-top:2px}
+.st{font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.8;color:var(--text);font-weight:500}
+.confirm-bar{background:#F0FFF8;border-top:2px solid var(--teal);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0}
+.confirm-text{font-size:13px;color:#1B5B55;font-weight:500}
+.confirm-btn{background:var(--teal);color:#fff;border:none;border-radius:100px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.confirmed{font-size:13px;font-weight:600;color:var(--teal);display:none}
+.action-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:var(--warm);border-top:1px solid var(--border);flex-shrink:0}
+.btn-back{display:flex;align-items:center;gap:8px;background:transparent;color:var(--navy);border:1.5px solid var(--border);border-radius:100px;padding:11px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-back:disabled{opacity:.3;cursor:default}
+.btn-next{display:flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:11px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-next svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-read{display:flex;align-items:center;gap:8px;background:var(--navy);color:#fff;border:none;border-radius:100px;padding:11px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-read svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="banner-left"><span class="b-tag">Activity 1</span><span class="b-sep">/</span><span class="b-title">Reading Level Comparison</span></div>
+  <div class="b-desc">Participant reads all three versions and chooses which feels most comfortable. That choice locks for all remaining activities.</div>
+</div>
+<div class="tabs">
+  <div class="tab t-blue active" id="tab-original" onclick="sw('original')"><span class="dot d-blue"></span>Original Version</div>
+  <div class="tab t-yellow" id="tab-plainer" onclick="sw('plainer')"><span class="dot d-yellow"></span>Plain Language Version</div>
+  <div class="tab t-green" id="tab-plainest" onclick="sw('plainest')"><span class="dot d-green"></span>Easy Read Version</div>
+</div>
+<div class="page">
+  <div class="top-bar">
+    <span class="org">CHI Fargo Health System</span>
+    <span class="step-info" id="step-info">Viewing: Original Version</span>
+  </div>
+  <div id="pane-original" class="pane active">
+    <div class="doc-header">
+      <div class="doc-lbl" id="lbl-o"></div>
+      <h1 id="h1-o"></h1>
+      <div class="doc-sub" id="sub-o"></div>
+      <div class="level-pill pill-blue"><span class="dot d-blue"></span>Original Version</div>
+    </div>
+    <div class="scroll"><div id="body-original"></div></div>
+  </div>
+  <div id="pane-plainer" class="pane">
+    <div class="doc-header">
+      <div class="doc-lbl" id="lbl-p"></div>
+      <h1 id="h1-p"></h1>
+      <div class="doc-sub" id="sub-p"></div>
+      <div class="level-pill pill-yellow"><span class="dot d-yellow"></span>Plain Language Version</div>
+    </div>
+    <div class="scroll"><div id="body-plainer"></div></div>
+  </div>
+  <div id="pane-plainest" class="pane">
+    <div class="doc-header">
+      <div class="doc-lbl" id="lbl-pl"></div>
+      <h1 id="h1-pl"></h1>
+      <div class="doc-sub" id="sub-pl"></div>
+      <div class="level-pill pill-green"><span class="dot d-green"></span>Easy Read Version</div>
+    </div>
+    <div class="scroll"><div id="body-plainest"></div></div>
+  </div>
+  <div class="confirm-bar">
+    <span class="confirm-text" id="confirm-text">Which version feels most comfortable to read?</span>
+    <span class="confirmed" id="confirmed-msg"></span>
+    <button class="confirm-btn" id="confirm-btn" onclick="lock()">This is the one I want</button>
+  </div>
+  <div class="action-bar">
+    <button class="btn-read" onclick="readActive()">
+      <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+      Read this to me
+    </button>
+    <button class="btn-back" id="btn-back" onclick="stepTab(-1)" disabled>
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back
+    </button>
+    <button class="btn-next" id="btn-next" onclick="stepTab(1)">
+      Next<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</div>
+<script>
+const TABS = ['original','plainer','plainest'];
+const VLAB = {original:'Original Version', plainer:'Plain Language Version', plainest:'Easy Read Version'};
+let current = 'original', locked = false;
+
+// ── DOCS DATA ──────────────────────────────────────────────────────────────────
+// Shared DOCS data included inline in each activity file
+const DOCS = {
+  prescription: {
+    label: 'Prescription Label',
+    original: {
+      title: 'METFORMIN HCL 500MG Tablets',
+      sub: 'Rx #4821047 · Qty: 60 · Refills: 3 · CHI Fargo Pharmacy',
+      kp: ['Take orally twice daily with meals', 'Contraindicated with renal impairment', 'Discontinue if lactic acidosis is suspected'],
+      sections: [
+        { label: 'Dosage and Administration', head: 'Dosage Instructions',
+          body: 'Take 1 tablet orally twice daily with meals. This medication is indicated as an adjunct to diet and exercise to improve glycemic control in adults with type 2 diabetes mellitus. Administer with the evening meal to reduce gastrointestinal adverse effects.' },
+        { label: 'Contraindications and Warnings', head: 'Important Warnings',
+          body: 'Contraindicated in patients with renal impairment. May cause gastrointestinal adverse effects including nausea, vomiting, and diarrhea, particularly during initiation of therapy. Discontinue immediately if lactic acidosis is suspected: symptoms include unexplained muscle pain, difficulty breathing, and unusual drowsiness.' }
+      ]
+    },
+    plainer: {
+      title: 'Your Medicine Label (Metformin 500mg)',
+      sub: 'Prescription #4821047 · 60 tablets · 3 refills',
+      kp: ['Take 1 pill two times a day, with food', 'Do not take if your kidneys are not working well', 'Call your doctor if you feel very sick or have muscle pain'],
+      sections: [
+        { label: 'How to Take It', head: 'Your Dosage Instructions',
+          body: 'Take 1 tablet two times a day. Take it with food, like with dinner. This medicine helps control your blood sugar if you have type 2 diabetes. It works best when you also eat healthy and exercise regularly.' },
+        { label: 'Important Warnings', head: 'When to Be Careful',
+          body: 'Do not take this medicine if your kidneys are not working well. You may feel sick to your stomach, especially when you first start. This usually gets better after a few weeks. Call your doctor right away if you have muscle pain, feel very tired, or have trouble breathing.' }
+      ]
+    },
+    plainest: {
+      title: 'Your Medicine: Metformin',
+      sub: 'This tells you how to take your pill.',
+      kp: ['Take 1 pill, 2 times a day, with food', 'Call your doctor if you feel very sick'],
+      steps: ['Take 1 pill.', 'Take it 2 times a day.', 'Always take it with food.', 'This pill helps your blood sugar.'],
+      sections: [{ label: 'Important', head: 'When to Call Your Doctor', body: 'Call your doctor if your stomach hurts or if you feel very tired.' }]
+    },
+    defs: {
+      'glycemic control':    { term: 'Glycemic control',    plain: 'Keeping your blood sugar at a healthy level.',                                             example: 'Example: When your blood sugar stays in a normal range, that is good glycemic control.' },
+      'gastrointestinal':    { term: 'Gastrointestinal',    plain: 'Related to your stomach, intestines, and digestive system.',                              example: 'Example: Nausea and stomach aches are gastrointestinal side effects.' },
+      'renal impairment':    { term: 'Renal impairment',    plain: 'When your kidneys are not working as well as they should.',                               example: 'Example: People with kidney disease often have renal impairment.' },
+      'contraindicated':     { term: 'Contraindicated',     plain: 'Not safe to use in a certain situation.',                                                 example: 'Example: "Contraindicated" means you should not take this medicine.' },
+      'lactic acidosis':     { term: 'Lactic acidosis',     plain: 'A serious build-up of acid in the blood. This is a medical emergency.',                   example: 'Example: Signs include fast breathing, muscle pain, and unusual tiredness.' }
+    },
+    expls: {
+      p0: { what: 'Take 1 Metformin pill twice a day with a meal.', mean: 'This is a diabetes medicine. It helps your body use sugar properly. You take it with food to avoid stomach trouble.', why: 'Keeping your blood sugar stable prevents long-term problems with your heart, eyes, and kidneys.' },
+      p1: { what: 'If you feel extremely tired, have muscle pain, or cannot breathe well, stop and call your doctor or 911 right away.', mean: 'This warning is about a rare but serious side effect. Most people never experience it, but it is important to know the signs.', why: 'Catching this early could save your life. When in doubt, call your doctor.' }
+    }
+  },
+  discharge: {
+    label: 'Discharge Instructions',
+    original: {
+      title: 'Post-Procedure Discharge Instructions',
+      sub: 'Patient Copy · CHI Fargo Surgery',
+      kp: ['Ambulation restricted for 24 hours post-procedure', 'Analgesic regimen: ibuprofen 400mg q6h PRN with food', 'Contact provider if fever exceeds 101°F or incision shows signs of infection'],
+      sections: [
+        { label: 'Activity Restrictions', head: 'Rest and Recovery',
+          body: 'Ambulation should be limited for the first 24 hours following your procedure. A responsible adult must accompany you home; operating a motor vehicle or heavy machinery is strictly prohibited for the remainder of the day. Light activity may resume after 24 hours as tolerated.' },
+        { label: 'Analgesic Protocol', head: 'Pain Management',
+          body: 'Administer ibuprofen 400mg orally every 6 hours as needed for pain management. Always take with food or milk to minimize gastrointestinal irritation. Do not exceed 4 doses per 24-hour period. Contact your care team if pain is inadequately controlled.' }
+      ]
+    },
+    plainer: {
+      title: 'Going Home After Your Visit',
+      sub: 'Instructions from CHI Fargo Surgery',
+      kp: ['Rest for 24 hours. Do not drive today.', 'Take pain medicine every 6 hours with food.', 'Call if you have a fever above 101°F.'],
+      sections: [
+        { label: 'Activity', head: 'Rest and Recovery',
+          body: 'You had a procedure today. Rest for the next 24 hours. Someone else needs to drive you home. Do not drive or use heavy machines today. After 24 hours, you can do light activities when you feel ready.' },
+        { label: 'Pain Medicine', head: 'Managing Your Pain',
+          body: 'Take ibuprofen 400mg every 6 hours if you are in pain. Always take it with food or milk. Do not take more than 4 doses in one day. If your pain does not get better, call your care team.' }
+      ]
+    },
+    plainest: {
+      title: 'Going Home: What to Do',
+      sub: 'Follow these steps after your visit.',
+      kp: ['Rest today. Someone else must drive you.', 'Take pain medicine with food if needed.'],
+      steps: ['Rest at home today.', 'Do not drive.', 'Take your pain pill with food if you hurt.', 'Drink plenty of water.'],
+      sections: [{ label: 'When to Call', head: 'Call Your Doctor If', body: 'You have a fever, your wound looks red or swollen, or your pain gets worse after 2 days.' }]
+    },
+    defs: {
+      'ambulation':           { term: 'Ambulation',                plain: 'Walking around and moving on your own.',                                            example: 'Example: "Limited ambulation" means staying mostly in bed or seated.' },
+      'analgesic':            { term: 'Analgesic',                 plain: 'A medicine that reduces pain, like ibuprofen or acetaminophen.',                    example: 'Example: Ibuprofen is an analgesic.' },
+      'gastrointestinal':     { term: 'Gastrointestinal',          plain: 'Related to your stomach and digestive system.',                                      example: 'Example: Taking medicine without food can cause gastrointestinal irritation.' },
+      'incision':             { term: 'Incision',                  plain: 'A cut made during a medical procedure.',                                             example: 'Example: The incision site needs to be kept clean after surgery.' },
+      'prohibited':           { term: 'Prohibited',                plain: 'Not allowed.',                                                                       example: 'Example: Driving is prohibited means you must not drive.' }
+    },
+    expls: {
+      p0: { what: 'Rest at home today. Do not drive. Have someone stay with you or nearby.', mean: 'Your body needs recovery time after a procedure. Driving is dangerous because the medicine used may still be affecting you.', why: 'Resting lowers the risk of complications and helps your body heal faster.' },
+      p1: { what: 'Take ibuprofen 400mg every 6 hours if you are in pain. Take it with food. Stop at 4 doses per day.', mean: 'This is a pain management plan. Ibuprofen reduces inflammation and pain. Taking it with food protects your stomach.', why: 'Controlled pain helps you rest and recover. Untreated pain can slow healing.' }
+    }
+  },
+  insurance: {
+    label: 'Insurance Letter',
+    original: {
+      title: 'Explanation of Benefits (EOB) Statement',
+      sub: 'Member ID: [ID] · Claim #2024-08-4421 · Plan: Medicaid Managed Care',
+      kp: ['Total billed: $1,240.00 · Plan paid: $1,116.00', 'Patient responsibility (coinsurance): $124.00', 'Appeal deadline: 60 days from date of this notice'],
+      sections: [
+        { label: 'Claim Summary', head: 'How Your Claim Was Processed',
+          body: 'The provider submitted a claim for services rendered on your visit date. The total billed amount was $1,240.00. The allowed amount after contractual adjustment is $1,240.00. Your plan paid $1,116.00 toward this amount. Your patient responsibility, including applicable coinsurance, is $124.00. Your deductible balance is $0.00.' },
+        { label: 'Your Rights', head: 'If You Disagree With This Decision',
+          body: 'You have the right to appeal this determination. To initiate a formal grievance, contact Member Services within 60 days of this notice. If your appeal is denied, you may request an independent external review through the State Insurance Commissioner. You are not required to pay the provider while an appeal is pending.' }
+      ]
+    },
+    plainer: {
+      title: 'What Your Insurance Paid (Summary)',
+      sub: 'Claim #2024-08-4421 · Medicaid Managed Care',
+      kp: ['Your insurance paid $1,116 of your $1,240 bill.', 'You owe $124 to the provider.', 'If you think this is wrong, you have 60 days to appeal.'],
+      sections: [
+        { label: 'What Was Paid', head: 'How Your Bill Was Handled',
+          body: 'Your provider charged $1,240 for your visit. Your insurance plan paid $1,116 of that. You are responsible for the remaining $124. This is your coinsurance, the share of the cost you pay after your deductible is met.' },
+        { label: 'If You Disagree', head: 'How to Appeal',
+          body: 'You have the right to challenge this decision. Call Member Services within 60 days of this letter to start an appeal. While your appeal is being reviewed, you do not have to pay the provider yet.' }
+      ]
+    },
+    plainest: {
+      title: 'Your Insurance Payment Summary',
+      sub: 'What happened with your health bill.',
+      kp: ['Your insurance paid most of your bill.', 'You owe $124.'],
+      steps: ['Your bill was $1,240.', 'Your insurance paid $1,116.', 'You owe $124.', 'You have 60 days to disagree if something seems wrong.'],
+      sections: [{ label: 'If You Think It Is Wrong', head: 'You Can Appeal', body: 'Call Member Services in the next 60 days if you think a mistake was made. You do not have to pay while they review it.' }]
+    },
+    defs: {
+      'coinsurance':          { term: 'Coinsurance',         plain: 'Your share of the cost of a covered health service, usually a percentage.',               example: 'Example: If your coinsurance is 10% and the bill is $1,240, you pay $124.' },
+      'deductible':           { term: 'Deductible',          plain: 'The amount you pay out of pocket each year before your insurance starts covering costs.',   example: 'Example: If your deductible is $500, you pay the first $500 yourself.' },
+      'appeal':               { term: 'Appeal',              plain: 'A formal request asking your insurance company to review and change a decision.',            example: 'Example: If insurance denies a claim, you can appeal to ask them to reconsider.' },
+      'grievance':            { term: 'Grievance',           plain: 'An official complaint you file when you disagree with how a claim was handled.',            example: 'Example: Filing a grievance starts a formal review at the insurance company.' },
+      'determination':        { term: 'Determination',       plain: 'The official decision made by your insurance company about your claim.',                    example: 'Example: The determination was that they would pay $1,116 of the bill.' }
+    },
+    expls: {
+      p0: { what: 'Pay $124 to your provider. Keep this letter for your records.', mean: 'Your insurance covered most of the bill. The $124 is your required share based on your plan rules.', why: 'Understanding what you owe prevents surprise bills and helps you plan your finances.' },
+      p1: { what: 'If you think the $124 is wrong, call Member Services within 60 days to start an appeal.', mean: 'You have legal rights to challenge this decision. An appeal is a formal process, and you do not have to pay while it is reviewed.', why: 'Insurance companies sometimes make errors. Appealing is how you get those corrected.' }
+    }
+  },
+  consent: {
+    label: 'Consent Form',
+    original: {
+      title: 'Consent to Treatment and Clinical Research',
+      sub: 'CHI Fargo Division · Patient Copy',
+      kp: ['Consent to examination and treatment by the care team', 'Records may be used for research with privacy protections', 'You retain the right to refuse treatment at any time'],
+      sections: [
+        { label: 'Section 1', head: 'Consent to Treatment',
+          body: 'I have a health condition and agree to let my care team examine and treat me. This may include x-rays, lab tests, and other standard procedures. My care team may include doctors, nurses, and other staff who work for or with Catholic Health Initiatives Fargo Division. I understand that all medical treatment carries some risk, and no one can guarantee specific results.' },
+        { label: 'Section 2', head: 'Clinical Education and Research',
+          body: 'I agree to allow supervised students and trainees, such as medical students, nursing students, residents, and fellows, to be part of my care. My medical records and any samples collected during my care may be used for research. Any such research will protect my privacy; I will not be identified without my written permission. No additional tests or procedures will be done on me just for research purposes without my separate written consent.' }
+      ]
+    },
+    plainer: {
+      title: 'Agreement to Receive Care and Support Research',
+      sub: 'CHI Fargo Division · Patient Copy',
+      kp: ['You agree to let the care team examine and treat you', 'Your records may be used for research, with your privacy protected', 'You can refuse any treatment at any time'],
+      sections: [
+        { label: 'Section 1', head: 'Agreeing to Treatment',
+          body: 'I agree to let my care team examine and treat me. This may include x-rays, blood tests, and other standard medical steps. My care team includes doctors, nurses, and other staff at CHI Fargo. I understand that medical treatment can have risks, and results cannot be guaranteed.' },
+        { label: 'Section 2', head: 'Students and Research',
+          body: 'I agree to let supervised students, such as medical and nursing students in training, take part in my care. My health records and any samples from my care may be used for research. My identity will be kept private. No extra tests will be done on me just for research without my separate written agreement.' }
+      ]
+    },
+    plainest: {
+      title: 'Agreeing to Care at CHI Fargo',
+      sub: 'What this form says.',
+      kp: ['You agree to let doctors and nurses care for you', 'You can say no to any treatment at any time'],
+      steps: ['I agree to let the care team look at me and treat me.', 'I know that some risk is possible with any care.', 'I can say no to any treatment at any time.', 'Student doctors may help with my care. They are always supervised.'],
+      sections: [{ label: 'Research', head: 'Using Your Health Records', body: 'My health records may be used for research. My name will not be shared without my permission.' }]
+    },
+    defs: {
+      'procedures':           { term: 'Procedures',          plain: 'Medical actions your care team performs to examine, treat, or monitor a health condition.',  example: 'Example: Taking your blood pressure, getting stitches, or having an ultrasound.' },
+      'trainees':             { term: 'Trainees',            plain: 'People still learning their medical profession, always supervised by a qualified professional.', example: 'Example: A nursing student who takes your blood pressure while their instructor observes.' },
+      'residents':            { term: 'Residents',           plain: 'Doctors who finished medical school and are doing practical training at a hospital.',            example: 'Example: A doctor in their second year of hospital training.' },
+      'fellows':              { term: 'Fellows',             plain: 'Doctors who completed residency and are now training in a specific specialty.',                   example: 'Example: A doctor specializing in cardiology doing advanced training.' },
+      'consent':              { term: 'Consent',             plain: 'Your official agreement, given freely, to allow something to happen. You can change your mind.',  example: 'Example: Signing this form means you are giving consent to receive treatment.' }
+    },
+    expls: {
+      p0: { what: 'Right now you just need to read and decide if you agree. If you sign, you are saying yes to being examined and treated here.', mean: 'This paragraph says you agree to be checked and cared for. It covers routine things like tests, not surgery or special procedures.', why: 'Hospitals are required by law to get your agreement before any care. This form makes that agreement official.' },
+      p1: { what: 'Nothing extra unless researchers want to do something additional, in which case they must ask you separately with a new form.', mean: 'Student doctors and nurses may be part of your care team, but they are always supervised. Your health records may be studied for research, but your name will never be attached without your permission.', why: 'Medical research helps find better treatments. Hospitals are legally required to protect your privacy.' }
+    }
+  },
+  aftervisit: {
+    label: 'After-Visit Summary',
+    original: {
+      title: 'After-Visit Summary (Diabetes Management Review)',
+      sub: 'Visit date: [Date] · Dr. Chen, Internal Medicine · CHI Fargo Clinic',
+      kp: ['HbA1c: 7.8%: above target of below 7.0%', 'Blood pressure: 138/88 mmHg: borderline elevated', 'Follow-up in 90 days; referral to dietitian placed'],
+      sections: [
+        { label: 'Clinical Findings', head: 'What We Reviewed Today',
+          body: 'Your hemoglobin A1c (HbA1c) is 7.8%, which is above your target range of below 7.0%. Your blood pressure reading of 138/88 mmHg is borderline elevated. Your BMI is 29.2, classified as overweight. We reviewed your current medication regimen including Metformin 500mg twice daily.' },
+        { label: 'Plan and Follow-Up', head: 'Your Next Steps',
+          body: 'A referral has been placed to a registered dietitian for nutritional counseling to support glycemic management. Continue your current medication regimen without modification. Self-monitor blood glucose daily and log results. A follow-up appointment has been scheduled in 90 days. Contact the clinic if your fasting blood glucose exceeds 250 mg/dL on two consecutive readings.' }
+      ]
+    },
+    plainer: {
+      title: 'Summary of Your After-Visit',
+      sub: 'Visit date: [Date] · Dr. Chen · CHI Fargo Clinic',
+      kp: ['Your blood sugar level (HbA1c) is 7.8% and the goal is below 7.0%.', 'Your blood pressure is a little high.', 'A food counselor referral has been sent. Come back in 90 days.'],
+      sections: [
+        { label: 'What We Found', head: 'Your Results Today',
+          body: 'Your HbA1c is 7.8%. HbA1c measures your average blood sugar over the past 3 months. The goal is below 7.0%. Your blood pressure was 138/88, which is a little higher than ideal. Your weight puts your BMI at 29.2, which is slightly above the healthy range.' },
+        { label: 'What to Do Next', head: 'Your Action Plan',
+          body: 'A dietitian will contact you to schedule a food and nutrition appointment. Keep taking your Metformin as prescribed. Check your blood sugar each day and write down the numbers. Come back to see Dr. Chen in 90 days. Call the clinic if your morning blood sugar is above 250 two days in a row.' }
+      ]
+    },
+    plainest: {
+      title: 'After Your Visit with Dr. Chen',
+      sub: 'Here is what we talked about and what to do next.',
+      kp: ['Your blood sugar is a little too high.', 'A food counselor will call you soon.', 'Come back in 90 days.'],
+      steps: ['Keep taking your Metformin pill twice a day.', 'Check your blood sugar every morning.', 'Write down the numbers.', 'Call us if the number is above 250 two days in a row.'],
+      sections: [{ label: 'Next Appointment', head: 'When to Come Back', body: 'Your next visit with Dr. Chen is in 90 days. A food counselor will call you to set up a separate meeting.' }]
+    },
+    defs: {
+      'hemoglobin a1c':       { term: 'Hemoglobin A1c (HbA1c)', plain: 'A blood test showing your average blood sugar level over the past 2 to 3 months. The goal for most people with diabetes is below 7.0%.', example: 'Example: A result of 7.8% means your blood sugar has been running a little higher than the target.' },
+      'bmi':                  { term: 'BMI (Body Mass Index)',   plain: 'A number calculated from your height and weight, used as a rough guide to whether your weight is in a healthy range.',              example: 'Example: A BMI between 18.5 and 24.9 is considered healthy.' },
+      'referral':             { term: 'Referral',                plain: 'A recommendation from your doctor to see another health professional for a specific service.',                                       example: 'Example: A referral to a dietitian means your doctor is sending you to a food and nutrition expert.' },
+      'glycemic management':  { term: 'Glycemic management',     plain: 'Keeping your blood sugar levels in a healthy range through diet, exercise, and medicine.',                                          example: 'Example: Eating less sugar and taking your medicine both support glycemic management.' },
+      'fasting blood glucose':{ term: 'Fasting blood glucose',   plain: 'Your blood sugar level after you have not eaten for at least 8 hours.',                                                             example: 'Example: This is usually checked first thing in the morning before breakfast.' }
+    },
+    expls: {
+      p0: { what: 'No immediate action needed from today. Focus on taking your medicine and checking your blood sugar daily.', mean: 'Your blood sugar and blood pressure are both a bit above the healthy target. This is common and manageable. The doctor is tracking it, not alarmed.', why: 'Keeping blood sugar and blood pressure in check prevents serious long-term complications like heart disease, kidney damage, and vision loss.' },
+      p1: { what: 'Keep taking Metformin, check your blood sugar daily, write down the numbers, and come back in 90 days.', mean: 'The plan is to improve your numbers gradually through medicine, diet, and monitoring. The dietitian will help with food choices.', why: 'Small, consistent daily habits make the biggest difference for diabetes management.' }
+    }
+  }
+};
+
+function buildSections(v, containerId) {
+  const area = document.getElementById(containerId);
+  area.innerHTML = '';
+  if (v.steps) {
+    const div = document.createElement('div');
+    div.innerHTML = '<div class="s-lbl">What to do</div><div class="s-head">Step by Step</div>';
+    const ul = document.createElement('ul'); ul.className = 'steps-list';
+    v.steps.forEach((s,i) => {
+      const li = document.createElement('li'); li.className = 'step-row';
+      li.innerHTML = '<div class="sn">'+(i+1)+'</div><div class="st">'+s+'</div>';
+      ul.appendChild(li);
+    });
+    div.appendChild(ul); area.appendChild(div);
+  }
+  if (v.sections) {
+    v.sections.forEach((sec, i) => {
+      if (i > 0 || v.steps) { const hr = document.createElement('hr'); hr.className = 'divider'; area.appendChild(hr); }
+      const div = document.createElement('div');
+      div.innerHTML = '<div class="s-lbl">'+sec.label+'</div><div class="s-head">'+sec.head+'</div><p class="p">'+sec.body+'</p>';
+      area.appendChild(div);
+    });
+  }
+}
+
+function init() {
+  const key = localStorage.getItem('selectedDoc') || 'consent';
+  const d = DOCS[key];
+  ['original','plainer','plainest'].forEach(vk => {
+    const v = d[vk];
+    const sfx = vk==='original'?'o':vk==='plainer'?'p':'pl';
+    document.getElementById('lbl-'+sfx).textContent = d.label;
+    document.getElementById('h1-'+sfx).textContent = v.title;
+    document.getElementById('sub-'+sfx).textContent = v.sub || '';
+    buildSections(v, 'body-'+vk);
+  });
+  const prev = localStorage.getItem('selectedLevel');
+  if (prev) sw(prev, true);
+}
+
+function sw(v, silent) {
+  if (locked) return;
+  current = v;
+  TABS.forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===v);
+    document.getElementById('pane-'+t).classList.toggle('active', t===v);
+  });
+  const idx = TABS.indexOf(v);
+  document.getElementById('btn-back').disabled = idx === 0;
+  document.getElementById('btn-next').textContent = idx === TABS.length-1 ? 'Done' : 'Next ›';
+  document.getElementById('step-info').textContent = 'Viewing: '+VLAB[v];
+  if (!silent) document.getElementById('confirm-text').textContent = 'You are reading the "'+VLAB[v]+'".';
+  window.speechSynthesis.cancel();
+}
+
+function stepTab(dir) {
+  const idx = TABS.indexOf(current);
+  const next = idx + dir;
+  if (next >= 0 && next < TABS.length) sw(TABS[next]);
+}
+
+function lock() {
+  locked = true;
+  localStorage.setItem('selectedLevel', current);
+  document.getElementById('confirm-btn').style.display = 'none';
+  document.getElementById('confirm-text').style.display = 'none';
+  const m = document.getElementById('confirmed-msg');
+  m.style.display = 'block'; m.textContent = 'Locked: '+VLAB[current];
+}
+
+function readActive() {
+  const pane = document.querySelector('.pane.active');
+  const u = new SpeechSynthesisUtterance(pane.innerText.replace(/\n+/g,' '));
+  u.rate = 0.88; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>

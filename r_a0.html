@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Activity 0: Choose Your Document</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC}
+html,body{min-height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--teal)}
+.banner-left{display:flex;align-items:center;gap:10px}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-mid)}
+.b-title{font-size:13px;font-weight:600;color:#fff}
+.b-sep{color:rgba(255,255,255,.2)}
+.b-desc{font-size:11px;color:rgba(255,255,255,.4);max-width:380px;text-align:right;line-height:1.4}
+
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);min-height:calc(100vh - 45px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);position:sticky;top:45px;z-index:99}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+
+.intro{padding:40px 40px 0}
+.intro h2{font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.intro p{font-size:15px;color:#4A5568;line-height:1.7;max-width:640px}
+
+.cards{padding:32px 40px 48px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:#fff;border:2px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;transition:all .2s;position:relative}
+.card:hover{border-color:var(--teal);box-shadow:0 4px 20px rgba(42,157,143,.15);transform:translateY(-2px)}
+.card.selected{border-color:var(--teal);background:var(--teal-light);box-shadow:0 0 0 3px rgba(42,157,143,.25)}
+.card-icon{font-size:32px;margin-bottom:12px}
+.card-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.card-title{font-family:'Lora',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.card-q{font-size:13.5px;color:#4A5568;line-height:1.6;margin-bottom:12px}
+.card-why{font-size:12px;color:var(--muted);line-height:1.5;padding-top:10px;border-top:1px solid var(--border)}
+.check{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;background:var(--teal);display:none;align-items:center;justify-content:center}
+.card.selected .check{display:flex}
+.check svg{width:14px;height:14px;fill:#fff}
+
+.confirm-section{padding:0 40px 48px}
+.confirm-bar{background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:12px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;display:none}
+.confirm-bar.show{display:flex}
+.confirm-text{font-size:14px;color:#1B5B55}
+.confirm-text strong{display:block;font-size:16px;font-family:'Lora',serif;color:var(--navy);margin-bottom:4px}
+.confirm-btn{background:var(--teal);color:#fff;border:none;border-radius:100px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .15s}
+.confirm-btn:hover{background:#1F7A6E}
+.locked-msg{text-align:center;padding:24px;display:none}
+.locked-msg.show{display:block}
+.locked-icon{font-size:48px;margin-bottom:12px}
+.locked-title{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.locked-sub{font-size:14px;color:#4A5568;line-height:1.6;margin-bottom:20px}
+.next-btn{background:var(--navy);color:#fff;border:none;border-radius:100px;padding:13px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="banner-left"><span class="b-tag">Activity 0</span><span class="b-sep">/</span><span class="b-title">Choose Your Document Type</span></div>
+  <div class="b-desc">Takes about 5 minutes. Participant picks the document type most relevant to their own life. This choice is used for all remaining activities.</div>
+</div>
+<div class="page">
+  <div class="top-bar">
+    <span class="org">CHI Fargo Health System</span>
+    <span style="font-size:12px;color:var(--teal-mid);font-weight:500">Step 1 of 7</span>
+  </div>
+
+  <div class="intro">
+    <h2>Which of these have you dealt with in real life?</h2>
+    <p>We are going to look at five kinds of health documents people commonly receive. Pick the one that feels most familiar or most important to you. We will use that document for everything we do today.</p>
+  </div>
+
+  <div class="cards" id="cards">
+
+    <div class="card" id="card-prescription" onclick="pick('prescription')">
+      <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">💊</div>
+      <div class="card-label">Prescription Label</div>
+      <div class="card-title">Medicine Labels</div>
+      <div class="card-q">Have you ever had to figure out how to take a medicine from the label on the bottle?</div>
+      <div class="card-why">Labels tell you dose, timing, and warnings. Missing instructions can be dangerous.</div>
+    </div>
+
+    <div class="card" id="card-discharge" onclick="pick('discharge')">
+      <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">🏥</div>
+      <div class="card-label">Discharge Instructions</div>
+      <div class="card-title">Hospital Discharge Papers</div>
+      <div class="card-q">Have you ever gotten papers from a hospital telling you what to do when you go home?</div>
+      <div class="card-why">These instructions tell you how to recover safely and when to call for help.</div>
+    </div>
+
+    <div class="card" id="card-insurance" onclick="pick('insurance')">
+      <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">📄</div>
+      <div class="card-label">Insurance Letter</div>
+      <div class="card-title">Health Insurance Documents</div>
+      <div class="card-q">Have you ever received a letter from your health insurance about a bill or what was covered?</div>
+      <div class="card-why">These letters explain what was paid and what you still owe, and your rights to appeal.</div>
+    </div>
+
+    <div class="card" id="card-consent" onclick="pick('consent')">
+      <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">✍️</div>
+      <div class="card-label">Consent Form</div>
+      <div class="card-title">Signing Before a Procedure</div>
+      <div class="card-q">Have you ever been asked to sign a form agreeing to treatment at a hospital or clinic?</div>
+      <div class="card-why">Consent forms are legal agreements. It is important to understand what you are signing.</div>
+    </div>
+
+    <div class="card" id="card-aftervisit" onclick="pick('aftervisit')" style="grid-column:1/-1;max-width:calc(50% - 10px)">
+      <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">📋</div>
+      <div class="card-label">After-Visit Summary</div>
+      <div class="card-title">Doctor Visit Summary</div>
+      <div class="card-q">Have you ever gotten a printed summary of what happened during a doctor visit, with results and next steps?</div>
+      <div class="card-why">These summaries remind you of test results and what to do before your next visit.</div>
+    </div>
+
+  </div>
+
+  <div class="confirm-section">
+    <div class="confirm-bar" id="confirm-bar">
+      <div class="confirm-text">
+        <strong id="confirm-title"></strong>
+        We will use this document for all activities today.
+      </div>
+      <button class="confirm-btn" onclick="lockChoice()">Yes, use this one</button>
+    </div>
+    <div class="locked-msg" id="locked-msg">
+      <div class="locked-icon" id="locked-icon"></div>
+      <div class="locked-title" id="locked-title"></div>
+      <div class="locked-sub">All activities today will use this document type. When you are ready, open Activity 1 to begin.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const docs={
+  prescription:{label:'Medicine Label (Prescription)',icon:'💊',title:'Prescription Label (Metformin)'},
+  discharge:{label:'Hospital Discharge Papers',icon:'🏥',title:'Discharge Instructions'},
+  insurance:{label:'Health Insurance Letter',icon:'📄',title:'Insurance / Explanation of Benefits'},
+  consent:{label:'Consent Form',icon:'✍️',title:'Consent to Treatment Form'},
+  aftervisit:{label:'After-Visit Summary',icon:'📋',title:'After-Visit Summary'}
+};
+let selected=null;
+// Restore previous selection if any
+const prev=localStorage.getItem('selectedDoc');
+if(prev){pick(prev,true);}
+
+function pick(key,silent){
+  selected=key;
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('card-'+key).classList.add('selected');
+  document.getElementById('confirm-title').textContent=docs[key].label;
+  document.getElementById('confirm-bar').classList.add('show');
+  if(!silent) document.getElementById('locked-msg').classList.remove('show');
+}
+function lockChoice(){
+  if(!selected)return;
+  localStorage.setItem('selectedDoc',selected);
+  document.getElementById('confirm-bar').classList.remove('show');
+  const lm=document.getElementById('locked-msg');
+  lm.classList.add('show');
+  document.getElementById('locked-icon').textContent=docs[selected].icon;
+  document.getElementById('locked-title').textContent=docs[selected].title+' document selected';
+  document.querySelectorAll('.card').forEach(c=>{
+    if(!c.classList.contains('selected'))c.style.opacity='0.4';
+    c.style.cursor='default';
+    c.onclick=null;
+  });
+}
+</script>
+</body>
+</html>
