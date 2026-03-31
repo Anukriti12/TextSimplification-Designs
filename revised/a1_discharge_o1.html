@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Activity 1</title><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC;--gold:#E9A03B;--violet:#6C63AC;--violet-light:#F0EFF9}
+html,body{height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--teal)}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-mid)}
+.b-title{font-size:13px;font-weight:600;color:#fff}
+.b-sep{color:rgba(255,255,255,.2)}
+.b-desc{font-size:11px;color:rgba(255,255,255,.4);max-width:420px;text-align:right;line-height:1.4}
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);display:flex;flex-direction:column;min-height:calc(100vh - 46px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);flex-shrink:0}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+.doc-header{background:var(--navy);padding:18px 40px 22px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.doc-lbl{display:inline-flex;align-items:center;gap:6px;background:rgba(42,157,143,.18);border:1px solid rgba(42,157,143,.4);color:var(--teal-mid);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.doc-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.doc-header h1{font-family:'Lora',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.25}
+.scroll{flex:1;overflow-y:auto;padding:32px 40px 36px}
+.s-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;margin-top:22px}
+.s-head{font-family:'Lora',serif;font-size:19px;font-weight:700;color:var(--navy);padding-bottom:8px;border-bottom:2px solid var(--teal-light);margin-bottom:2px}
+.p{font-family:'Lora',serif;font-size:17px;line-height:1.95;color:var(--text);margin-top:12px}
+.divider{border:none;border-top:1px dashed var(--border);margin:24px 0}
+.action-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:var(--warm);border-top:1px solid var(--border);flex-shrink:0}
+.btn-back{display:flex;align-items:center;gap:8px;background:transparent;color:var(--navy);border:1.5px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-back:disabled{opacity:.3;cursor:default}
+.btn-back svg,.btn-next svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-next{display:flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tabs{background:#162130;display:flex;padding:0 40px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:46px;z-index:299}
+.tab{padding:13px 24px 11px;font-size:13px;font-weight:600;color:rgba(255,255,255,.35);cursor:pointer;border-bottom:3px solid transparent;display:flex;align-items:center;gap:8px;user-select:none;transition:color .15s}
+.tab:hover{color:rgba(255,255,255,.65)}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tab.t-blue.active{color:#93C5FD;border-bottom-color:#3B82F6}
+.tab.t-orange.active{color:#FCD34D;border-bottom-color:#F59E0B}
+.tab.t-purple.active{color:#C4B5FD;border-bottom-color:#7C3AED}
+.pane{display:none;flex:1;flex-direction:column;overflow:hidden}
+.pane.active{display:flex}
+.confirm-bar{background:#F0FFF8;border-top:2px solid var(--teal);padding:13px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0}
+.confirm-text{font-size:13px;color:#1B5B55;font-weight:500}
+.confirmed{font-size:13px;font-weight:600;color:var(--teal);display:none}
+.confirm-btn{background:var(--teal);color:#fff;border:none;border-radius:100px;padding:9px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+</style></head><body>
+<div class="banner">
+  <div style="display:flex;align-items:center;gap:10px"><span class="b-tag">Activity 1</span><span class="b-sep">/</span><span class="b-title">Reading Level Comparison</span></div>
+  <div class="b-desc">Read all three versions and choose which feels most comfortable. That choice stays for all remaining activities.</div>
+</div>
+<div class="tabs" id="tabs-container"></div>
+<div class="page">
+  <div class="top-bar"><span class="org">Cooley Dickinson Hospital</span><span style="font-size:12px;color:var(--teal-mid);font-weight:500" id="step-info">Choose the version you enjoy reading most</span></div>
+  <div id="pane-original" class="pane active"><div class="doc-header"><div class="doc-lbl">Hospital Discharge Instructions</div><h1>Post-Operative Discharge Instructions</h1></div><div class="scroll"><div class="s-lbl">Rest and Activity</div><p class="p">Rest today. An adult should stay with you the first night after your procedure. You may resume regular activities tomorrow. Driving: You may drive when you feel comfortable, usually within 24 hours following your procedure, unless otherwise instructed.</p>
+<hr class="divider"><div class="s-lbl">Pain Management</div><p class="p">It is important that you stay ahead of the pain. Take pain medication as prescribed by your doctor. After 24 to 48 hours, you may take Acetaminophen (Tylenol) or Ibuprofen (Advil) for minor discomfort, unless you are restricted from using these. You should drink plenty of liquids and stick to a light diet for the next 24 hours.</p>
+<hr class="divider"><div class="s-lbl">Wound Care</div><p class="p">Keep your dressing clean and dry. Remove plastic dressing, but leave steri strips on, in 36 to 48 hours. You may then take a shower. Do not submerge incision in a tub or pool. Wash your hands before and after replacing the band-aid. Call the office if you have increasing pain, fever greater than 101 degrees, increasing redness or drainage around the wound, nausea or vomiting that prevents you from taking medication or fluids, or any other concerns.</p></div></div>
+<div id="pane-plain" class="pane"><div class="doc-header"><div class="doc-lbl">Hospital Discharge Instructions</div><h1>Post-Operative Discharge Instructions</h1></div><div class="scroll"><div class="s-lbl">Rest and Activity</div><p class="p">Rest at home today. Have an adult stay with you tonight. You can go back to regular activities tomorrow. You can usually drive within 24 hours, unless your doctor told you otherwise.</p>
+<hr class="divider"><div class="s-lbl">Pain Management</div><p class="p">Take your pain medicine before the pain gets bad. After 24 to 48 hours, Tylenol or Ibuprofen is usually fine for mild pain, unless your doctor said no. Drink plenty of fluids. Eat light food for the first 24 hours.</p>
+<hr class="divider"><div class="s-lbl">Wound Care</div><p class="p">Keep your wound dressing clean and dry. After 36 to 48 hours, remove the plastic part of the dressing but leave the small white strips on. You can shower after that. Do not soak the wound in a bathtub or pool. Always wash your hands before and after touching the wound. Call your doctor if you have pain that is getting worse, a fever above 101 degrees, redness or fluid at the wound, or if you feel too sick to take your medicine.</p></div></div>
+<div id="pane-easy" class="pane"><div class="doc-header"><div class="doc-lbl">Hospital Discharge Instructions</div><h1>Post-Operative Discharge Instructions</h1></div><div class="scroll"><div class="s-lbl">Rest and Activity</div><p class="p">Rest at home today. Have someone stay with you tonight. You can go back to normal activities tomorrow. You can drive when you feel ready. This is usually the next day.</p>
+<hr class="divider"><div class="s-lbl">Pain Management</div><p class="p">Take your pain medicine. Take it before the pain gets bad. Drink lots of water. Eat light food today.</p>
+<hr class="divider"><div class="s-lbl">Wound Care</div><p class="p">Keep your wound covered and dry. After two days, remove the top plastic part. Leave the small white strips on. You can shower after two days. Do not sit in a bath or pool. Wash your hands before and after touching the wound. Call your doctor if your pain is getting worse. Call your doctor if you have a fever. Call your doctor if your wound looks red or has liquid coming out.</p></div></div>
+
+  <div class="confirm-bar">
+    <span class="confirm-text" id="confirm-text">Which version did you enjoy reading more?</span>
+    <span class="confirmed" id="confirmed-msg"></span>
+    <button class="confirm-btn" id="confirm-btn" onclick="lock()">This is the one I want</button>
+  </div>
+  <div class="action-bar">
+    <button class="btn-back" id="btn-back" onclick="step(-1)" disabled><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back</button>
+    <button class="btn-next" id="btn-next" onclick="step(1)">Next<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+<script>
+var VLAB={original:'Blue Version',plain:'Orange Version',easy:'Purple Version'};
+var VCLS={original:'t-blue',plain:'t-orange',easy:'t-purple'};
+var VCOLOR={original:'#3B82F6',plain:'#F59E0B',easy:'#7C3AED'};
+var FILE_DEFAULT=["original", "plain", "easy"];
+var TABS=(function(){try{var s=localStorage.getItem('a1_tabOrder');if(s){var p=JSON.parse(s);if(Array.isArray(p)&&p.length===3)return p;}}catch(e){}return FILE_DEFAULT;})();
+var cur=TABS[0],locked=false;
+function buildTabs(){
+  var c=document.getElementById('tabs-container');c.innerHTML='';
+  TABS.forEach(function(vk,i){
+    var t=document.createElement('div');
+    t.className='tab '+VCLS[vk]+(i===0?' active':'');t.id='tab-'+vk;
+    t.onclick=function(){sw(vk);};
+    t.innerHTML='<span class="dot" style="background:'+VCOLOR[vk]+'"></span>'+VLAB[vk];
+    c.appendChild(t);
+  });
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('pane-'+TABS[0]).classList.add('active');
+  cur=TABS[0];nav();
+}
+function sw(v){
+  if(locked)return;cur=v;
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+v).classList.add('active');
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('pane-'+v).classList.add('active');
+  nav();
+  document.getElementById('confirm-text').textContent='You are reading the '+VLAB[v]+'. Which version did you enjoy more?';
+}
+function nav(){
+  var idx=TABS.indexOf(cur);
+  document.getElementById('btn-back').disabled=idx===0;
+  document.getElementById('btn-next').textContent=idx===TABS.length-1?'Done':'Next ›';
+}
+function step(d){var idx=TABS.indexOf(cur),n=idx+d;if(n>=0&&n<TABS.length)sw(TABS[n]);}
+function lock(){
+  locked=true;
+  var pid=localStorage.getItem('participantId')||'session';
+  localStorage.setItem('selectedLevel',JSON.stringify(cur));
+  localStorage.setItem(pid+'__selectedLevel',JSON.stringify(cur));
+  document.getElementById('confirm-btn').style.display='none';
+  document.getElementById('confirm-text').style.display='none';
+  var m=document.getElementById('confirmed-msg');m.style.display='block';m.textContent='Locked: '+VLAB[cur];
+}
+buildTabs();
+</script></body></html>

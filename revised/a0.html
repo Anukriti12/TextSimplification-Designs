@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Activity 0: Document Familiarity</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC}
+html,body{min-height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--teal)}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-mid)}
+.b-title{font-size:13px;font-weight:600;color:#fff;margin-left:10px}
+.b-sep{color:rgba(255,255,255,.2);margin:0 6px}
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);min-height:calc(100vh - 45px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);position:sticky;top:45px;z-index:99}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+.prompt{padding:36px 40px 24px}
+.prompt h2{font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.prompt-sub{font-size:15px;color:var(--muted);margin-top:6px}
+.cards{padding:0 40px 32px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:#fff;border:2px solid var(--border);border-radius:14px;padding:26px 24px 22px;cursor:pointer;transition:all .2s;position:relative;user-select:none}
+.card:hover{border-color:var(--teal);box-shadow:0 4px 20px rgba(42,157,143,.15);transform:translateY(-2px)}
+.card.selected{border-color:var(--teal);background:var(--teal-light);box-shadow:0 0 0 3px rgba(42,157,143,.25)}
+.card-check{position:absolute;top:16px;right:16px;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.card.selected .card-check{background:var(--teal);border-color:var(--teal)}
+.card-check svg{width:12px;height:12px;fill:#fff;display:none}
+.card.selected .card-check svg{display:block}
+.card-icon{font-size:34px;margin-bottom:12px}
+.card-title{font-family:'Lora',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.card-desc{font-size:15px;color:#4A5568;line-height:1.6}
+.submit-area{padding:0 40px 48px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.selected-count{font-size:14px;color:var(--muted)}
+.selected-count span{font-weight:700;color:var(--teal)}
+.submit-btn{background:var(--teal);color:#fff;border:none;border-radius:100px;padding:13px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s;opacity:.4;pointer-events:none}
+.submit-btn.active{opacity:1;pointer-events:auto}
+.submit-btn.active:hover{background:#1F7A6E}
+.locked-bar{display:none;margin:0 40px 48px;background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:12px;padding:18px 24px}
+.locked-bar.show{display:block}
+.locked-title{font-family:'Lora',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.locked-tags{display:flex;gap:8px;flex-wrap:wrap}
+.locked-tag{background:var(--teal);color:#fff;font-size:12px;font-weight:600;padding:4px 12px;border-radius:100px}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <span class="b-tag">Activity 0</span>
+  <span class="b-sep">/</span>
+  <span class="b-title">Document Familiarity</span>
+</div>
+
+<div class="page">
+  <div class="top-bar">
+    <span class="org">CHI Fargo Health System</span>
+    <span style="font-size:12px;color:var(--teal-mid);font-weight:500">Step 1 of 7</span>
+  </div>
+
+  <div class="prompt">
+    <h2>Which of these have you seen before?</h2>
+    <p class="prompt-sub">Tap all that apply.</p>
+  </div>
+
+  <div class="cards" id="cards">
+    <div class="card" id="card-prescription" onclick="toggle('prescription')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">💊</div>
+      <div class="card-title">Medicine Label</div>
+      <div class="card-desc">Instructions on a medicine bottle: how much to take, how often, and any warnings.</div>
+    </div>
+    <div class="card" id="card-discharge" onclick="toggle('discharge')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">🏥</div>
+      <div class="card-title">Hospital Discharge Papers</div>
+      <div class="card-desc">Papers from a hospital telling you what to do when you go home after a stay or procedure.</div>
+    </div>
+    <div class="card" id="card-insurance" onclick="toggle('insurance')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">📄</div>
+      <div class="card-title">Insurance Letter</div>
+      <div class="card-desc">A letter from your health insurance explaining what they paid and what you might owe.</div>
+    </div>
+    <div class="card" id="card-consent" onclick="toggle('consent')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">✍️</div>
+      <div class="card-title">Consent Form</div>
+      <div class="card-desc">A form you sign at a hospital or clinic agreeing to a treatment or procedure.</div>
+    </div>
+    <div class="card" id="card-pamphlet" onclick="toggle('pamphlet')" style="grid-column:1/-1;max-width:calc(50% - 9px)">
+      <div class="card-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="card-icon">📰</div>
+      <div class="card-title">Health Information Pamphlet</div>
+      <div class="card-desc">A leaflet from a clinic, pharmacy, or health organisation explaining a health condition or how to stay healthy.</div>
+    </div>
+  </div>
+
+  <div class="submit-area">
+    <div class="selected-count" id="count-text">Select at least one to continue.</div>
+    <button class="submit-btn" id="submit-btn" onclick="submitForm()">Done</button>
+  </div>
+
+  <div class="locked-bar" id="locked-bar">
+    <div class="locked-title">Response recorded</div>
+    <div class="locked-tags" id="locked-tags"></div>
+  </div>
+</div>
+
+<script>
+var DOCS = {
+  prescription: { label: 'Medicine Label',             icon: '💊' },
+  discharge:    { label: 'Hospital Discharge Papers',   icon: '🏥' },
+  insurance:    { label: 'Insurance Letter',             icon: '📄' },
+  consent:      { label: 'Consent Form',                icon: '✍️' },
+  pamphlet:     { label: 'Health Information Pamphlet', icon: '📰' }
+};
+
+// ── On every fresh page load, clear any previous A0 response ────────────────
+// This means each new participant starts clean when the facilitator refreshes.
+// Persistent per-participant data uses the pid__ prefix and is NOT cleared here.
+localStorage.removeItem('a0_familiar');
+
+var selected = new Set();
+var submitted = false;
+
+function toggle(key) {
+  if (submitted) return;
+  var card = document.getElementById('card-' + key);
+  if (selected.has(key)) {
+    selected.delete(key);
+    card.classList.remove('selected');
+  } else {
+    selected.add(key);
+    card.classList.add('selected');
+  }
+  updateCount();
+}
+
+function updateCount() {
+  var n = selected.size;
+  var countEl = document.getElementById('count-text');
+  var btn = document.getElementById('submit-btn');
+  if (n === 0) {
+    countEl.textContent = 'Select at least one to continue.';
+    btn.classList.remove('active');
+  } else {
+    countEl.innerHTML = '<span>' + n + '</span> selected';
+    btn.classList.add('active');
+  }
+}
+
+function save(key, value) {
+  var pid = localStorage.getItem('participantId') || 'session';
+  // Save under participant prefix for export
+  localStorage.setItem(pid + '__' + key, JSON.stringify(value));
+  // Also save without prefix for inter-activity reads
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function submitForm() {
+  if (selected.size === 0 || submitted) return;
+  submitted = true;
+
+  var arr = Array.from(selected);
+  save('a0_familiar', arr);
+
+  // Lock cards so they cannot be changed after submission
+  document.querySelectorAll('.card').forEach(function(c) {
+    c.onclick = null;
+    c.style.cursor = 'default';
+  });
+  document.getElementById('submit-btn').style.display = 'none';
+  document.getElementById('count-text').style.display = 'none';
+
+  // Show confirmation
+  var bar = document.getElementById('locked-bar');
+  bar.classList.add('show');
+  var tags = document.getElementById('locked-tags');
+  tags.innerHTML = '';
+  arr.forEach(function(k) {
+    if (!DOCS[k]) return;
+    var tag = document.createElement('span');
+    tag.className = 'locked-tag';
+    tag.textContent = DOCS[k].icon + ' ' + DOCS[k].label;
+    tags.appendChild(tag);
+  });
+}
+
+updateCount();
+</script>
+</body>
+</html>

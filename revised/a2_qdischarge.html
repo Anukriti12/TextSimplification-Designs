@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Activity 2: Summary Bar</title><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC;--gold:#E9A03B;--violet:#6C63AC;--violet-light:#F0EFF9}
+html,body{height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--gold)}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FCD34D}
+.b-title{font-size:13px;font-weight:600;color:#fff}
+.b-sep{color:rgba(255,255,255,.2)}
+.b-desc{font-size:11px;color:rgba(255,255,255,.4);max-width:420px;text-align:right;line-height:1.4}
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);display:flex;flex-direction:column;min-height:calc(100vh - 46px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);flex-shrink:0}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+.doc-header{background:var(--navy);padding:18px 40px 22px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.doc-lbl{display:inline-flex;align-items:center;gap:6px;background:rgba(42,157,143,.18);border:1px solid rgba(42,157,143,.4);color:var(--teal-mid);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.doc-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.doc-header h1{font-family:'Lora',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.25}
+.scroll{flex:1;overflow-y:auto;padding:32px 40px 36px}
+.s-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;margin-top:22px}
+.s-head{font-family:'Lora',serif;font-size:19px;font-weight:700;color:var(--navy);padding-bottom:8px;border-bottom:2px solid var(--teal-light);margin-bottom:2px}
+.p{font-family:'Lora',serif;font-size:17px;line-height:1.95;color:var(--text);margin-top:12px}
+.divider{border:none;border-top:1px dashed var(--border);margin:24px 0}
+.action-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:var(--warm);border-top:1px solid var(--border);flex-shrink:0}
+.btn-back{display:flex;align-items:center;gap:8px;background:transparent;color:var(--navy);border:1.5px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-back:disabled{opacity:.3;cursor:default}
+.btn-back svg,.btn-next svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-next{display:flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.sub-nav{background:#162130;display:flex;padding:0 40px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:46px;z-index:299;align-items:center;gap:0}
+.tab{padding:14px 22px 12px;font-size:13px;font-weight:600;color:rgba(255,255,255,.38);cursor:pointer;border-bottom:3px solid transparent;user-select:none;transition:color .15s;white-space:nowrap}
+.tab:hover{color:rgba(255,255,255,.7)}
+.tab.active{color:#fff;border-bottom-color:var(--gold)}
+.pane{display:none;flex:1;overflow:hidden;flex-direction:column}
+.pane.active{display:flex}
+.kp-area{background:var(--navy);padding:14px 40px 18px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.kp-list{list-style:none}
+.kp-list li{display:flex;gap:10px;font-size:14px;font-weight:500;color:rgba(255,255,255,.88);line-height:1.55;margin-bottom:7px;padding:3px 0}
+.kp-list li::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:rgba(42,157,143,.22);color:#9EDBD6;border-radius:100px;padding:7px 16px;font-size:13px;font-weight:500;border:1px solid rgba(42,157,143,.4)}
+</style></head><body>
+<div class="banner">
+  <div style="display:flex;align-items:center;gap:10px"><span class="b-tag">Activity 2</span><span class="b-sep">/</span><span class="b-title">Summary Bar</span></div>
+  <div class="b-desc">Three ways to show a summary at the top of the document. The document below stays the same.</div>
+</div>
+<div class="sub-nav">
+  <div class="tab active" id="tab-sa" onclick="sw('sa')">Key Points</div>
+  <div class="tab" id="tab-sb" onclick="sw('sb')">Page Topics</div>
+  <div class="tab" id="tab-sc" onclick="sw('sc')">Start Reading</div>
+</div>
+<div class="page">
+  <div class="top-bar"><span class="org">Cooley Dickinson Hospital</span><span style="font-size:12px;color:var(--teal-mid);font-weight:500" id="step-info">Summary: Key Points</span></div>
+  <div id="pane-sa" class="pane active">
+    <div class="doc-header" id="hdr-sa"></div>
+    <div class="kp-area" id="kp-sa"></div>
+    <div class="scroll"><div id="body-sa"></div></div>
+  </div>
+  <div id="pane-sb" class="pane">
+    <div class="doc-header" id="hdr-sb"></div>
+    <div class="kp-area" id="kp-sb"></div>
+    <div class="scroll"><div id="body-sb"></div></div>
+  </div>
+  <div id="pane-sc" class="pane">
+    <div class="doc-header" id="hdr-sc"></div>
+    <div class="scroll"><div id="body-sc"></div></div>
+  </div>
+  <div class="action-bar">
+    <button class="btn-back" id="btn-back" onclick="step(-1)" disabled><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back</button>
+    <button class="btn-next" id="btn-next" onclick="step(1)">Next<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+<script>
+
+const ALL={"original": [{"label": "Rest and Activity", "body": "Rest today. An adult should stay with you the first night after your procedure. You may resume regular activities tomorrow. Driving: You may drive when you feel comfortable, usually within 24 hours following your procedure, unless otherwise instructed."}, {"label": "Pain Management", "body": "It is important that you stay ahead of the pain. Take pain medication as prescribed by your doctor. After 24 to 48 hours, you may take Acetaminophen (Tylenol) or Ibuprofen (Advil) for minor discomfort, unless you are restricted from using these. You should drink plenty of liquids and stick to a light diet for the next 24 hours."}, {"label": "Wound Care", "body": "Keep your dressing clean and dry. Remove plastic dressing, but leave steri strips on, in 36 to 48 hours. You may then take a shower. Do not submerge incision in a tub or pool. Wash your hands before and after replacing the band-aid. Call the office if you have increasing pain, fever greater than 101 degrees, increasing redness or drainage around the wound, nausea or vomiting that prevents you from taking medication or fluids, or any other concerns."}], "plain": [{"label": "Rest and Activity", "body": "Rest at home today. Have an adult stay with you tonight. You can go back to regular activities tomorrow. You can usually drive within 24 hours, unless your doctor told you otherwise."}, {"label": "Pain Management", "body": "Take your pain medicine before the pain gets bad. After 24 to 48 hours, Tylenol or Ibuprofen is usually fine for mild pain, unless your doctor said no. Drink plenty of fluids. Eat light food for the first 24 hours."}, {"label": "Wound Care", "body": "Keep your wound dressing clean and dry. After 36 to 48 hours, remove the plastic part of the dressing but leave the small white strips on. You can shower after that. Do not soak the wound in a bathtub or pool. Always wash your hands before and after touching the wound. Call your doctor if you have pain that is getting worse, a fever above 101 degrees, redness or fluid at the wound, or if you feel too sick to take your medicine."}], "easy": [{"label": "Rest and Activity", "body": "Rest at home today. Have someone stay with you tonight. You can go back to normal activities tomorrow. You can drive when you feel ready. This is usually the next day."}, {"label": "Pain Management", "body": "Take your pain medicine. Take it before the pain gets bad. Drink lots of water. Eat light food today."}, {"label": "Wound Care", "body": "Keep your wound covered and dry. After two days, remove the top plastic part. Leave the small white strips on. You can shower after two days. Do not sit in a bath or pool. Wash your hands before and after touching the wound. Call your doctor if your pain is getting worse. Call your doctor if you have a fever. Call your doctor if your wound looks red or has liquid coming out."}]};
+const KP_ALL={"original": ["Rest today; have an adult stay with you the first night", "Take prescribed pain medicine and stay ahead of pain", "Remove plastic dressing after 36 to 48 hours; leave steri strips on", "Call the office for fever above 101 F, worsening pain, or wound drainage"], "plain": ["Rest today and have someone stay with you tonight", "Take pain medicine before pain gets bad; eat lightly today", "Remove plastic dressing after two days but leave white strips on", "Call your doctor if you have a fever, worsening pain, or wound problems"], "easy": ["Rest at home today", "Have someone stay with you tonight", "Take your pain medicine before the pain gets bad", "Call your doctor if you have a fever or your wound looks wrong"]};
+const DEFS={"steri strips": {"term": "Steri strips", "plain": "Small thin pieces of tape placed over a wound to hold the skin together while it heals.", "example": "Steri strips look like narrow white tape. Leave them on until they fall off on their own."}, "incision": {"term": "Incision", "plain": "A cut made by a surgeon during an operation.", "example": "Your incision is the wound from your surgery. Keep it clean and dry."}, "acetaminophen": {"term": "Acetaminophen", "plain": "A common pain relief medicine. The brand name is Tylenol.", "example": "You can take Acetaminophen (Tylenol) for mild pain after 24 to 48 hours."}, "ibuprofen": {"term": "Ibuprofen", "plain": "A common pain relief and anti-swelling medicine. The brand name is Advil.", "example": "Ibuprofen (Advil) can help with mild pain and swelling."}};
+const EXPLS={"p0": {"what": "Rest at home today. Have another adult with you tonight. Do not drive today unless 24 hours have passed and you feel comfortable.", "mean": "After surgery, your body needs time to recover. Having someone with you is important for safety in case you feel unwell.", "why": "Anaesthesia and pain medicine can make you slower to react. Resting gives your body the best chance to heal."}, "p1": {"what": "Take the medicine your doctor prescribed. Do not wait until the pain is very bad before taking it.", "mean": "Pain medicine works better when taken before pain becomes severe. Tylenol or Ibuprofen can help with mild pain after the first day or two.", "why": "Staying comfortable helps you breathe properly, move carefully, and recover faster."}, "p2": {"what": "After 36 to 48 hours, remove the outer plastic dressing. Leave the thin white strips in place. Shower gently. Do not soak in a bath or pool.", "mean": "The steri strips protect the wound while it closes. Getting the wound wet in a bath or pool can cause infection.", "why": "Infections can slow healing and may need extra treatment. Keeping the wound clean and dry is the most important thing you can do at home."}};
+const DOC_TITLE="Post-Operative Discharge Instructions";
+const DOC_TYPE="Hospital Discharge Instructions";
+const ORG="Cooley Dickinson Hospital";
+const CHAT_WELCOME="Hello. I can help you understand your discharge instructions. What would you like to know?";
+function getLevel(){try{var s=localStorage.getItem('selectedLevel');if(s){var v=JSON.parse(s);if(ALL[v])return v;}}catch(e){}return 'original';}
+function getSecs(){return ALL[getLevel()];}
+function getKP(){return KP_ALL[getLevel()]||KP_ALL.original;}
+function renderHdr(id){var el=document.getElementById(id);if(!el)return;el.innerHTML='<div class="doc-lbl">'+DOC_TYPE+'</div><h1>'+DOC_TITLE+'</h1>';}
+function renderBody(id){var el=document.getElementById(id);if(!el)return;el.innerHTML='';getSecs().forEach(function(sec,i){if(i>0){var hr=document.createElement('hr');hr.className='divider';el.appendChild(hr);}var d=document.createElement('div');d.innerHTML='<div class="s-lbl">'+sec.label+'</div><p class="p">'+sec.body+'</p>';el.appendChild(d);});}
+function renderKP(id,style){var el=document.getElementById(id);if(!el)return;el.innerHTML='';var kp=getKP();if(style==='chips'){var div=document.createElement('div');div.className='chips';kp.forEach(function(k){var sp=document.createElement('span');sp.className='chip';sp.textContent=k;div.appendChild(sp);});el.appendChild(div);}else{var ul=document.createElement('ul');ul.className='kp-list';kp.forEach(function(k){var li=document.createElement('li');li.textContent=k;ul.appendChild(li);});el.appendChild(ul);}}
+function save(key,val){var pid=localStorage.getItem('participantId')||'session';localStorage.setItem(key,JSON.stringify(val));localStorage.setItem(pid+'__'+key,JSON.stringify(val));}
+function updateNav(tabs,cur){var idx=tabs.indexOf(cur);var bb=document.getElementById('btn-back'),bn=document.getElementById('btn-next');if(bb)bb.disabled=(idx===0);if(bn)bn.textContent=(idx===tabs.length-1)?'Done':'Next ›';}
+
+var TABS=['sa','sb','sc'],cur='sa';
+var LBL={sa:'Summary: Key Points',sb:'Summary: Page Topics',sc:'No Summary -- Start Reading'};
+function init(){
+  ['sa','sb','sc'].forEach(function(id){
+    renderHdr('hdr-'+id);
+    renderBody('body-'+id);
+    if(id==='sa')renderKP('kp-sa','bullets');
+    if(id==='sb')renderKP('kp-sb','chips');
+  });
+  updateNav(TABS,cur);
+}
+function sw(id){
+  cur=id;
+  TABS.forEach(function(t){document.getElementById('tab-'+t).classList.toggle('active',t===id);document.getElementById('pane-'+t).classList.toggle('active',t===id);});
+  save('choiceSummary',id);
+  updateNav(TABS,cur);
+  document.getElementById('step-info').textContent=LBL[id];
+}
+function step(d){var idx=TABS.indexOf(cur),n=idx+d;if(n>=0&&n<TABS.length)sw(TABS[n]);}
+window.addEventListener('load',init);
+</script></body></html>

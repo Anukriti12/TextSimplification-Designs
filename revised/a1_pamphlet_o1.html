@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Activity 1</title><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC;--gold:#E9A03B;--violet:#6C63AC;--violet-light:#F0EFF9}
+html,body{height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--teal)}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-mid)}
+.b-title{font-size:13px;font-weight:600;color:#fff}
+.b-sep{color:rgba(255,255,255,.2)}
+.b-desc{font-size:11px;color:rgba(255,255,255,.4);max-width:420px;text-align:right;line-height:1.4}
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);display:flex;flex-direction:column;min-height:calc(100vh - 46px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);flex-shrink:0}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+.doc-header{background:var(--navy);padding:18px 40px 22px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.doc-lbl{display:inline-flex;align-items:center;gap:6px;background:rgba(42,157,143,.18);border:1px solid rgba(42,157,143,.4);color:var(--teal-mid);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.doc-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.doc-header h1{font-family:'Lora',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.25}
+.scroll{flex:1;overflow-y:auto;padding:32px 40px 36px}
+.s-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;margin-top:22px}
+.s-head{font-family:'Lora',serif;font-size:19px;font-weight:700;color:var(--navy);padding-bottom:8px;border-bottom:2px solid var(--teal-light);margin-bottom:2px}
+.p{font-family:'Lora',serif;font-size:17px;line-height:1.95;color:var(--text);margin-top:12px}
+.divider{border:none;border-top:1px dashed var(--border);margin:24px 0}
+.action-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:var(--warm);border-top:1px solid var(--border);flex-shrink:0}
+.btn-back{display:flex;align-items:center;gap:8px;background:transparent;color:var(--navy);border:1.5px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-back:disabled{opacity:.3;cursor:default}
+.btn-back svg,.btn-next svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-next{display:flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tabs{background:#162130;display:flex;padding:0 40px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:46px;z-index:299}
+.tab{padding:13px 24px 11px;font-size:13px;font-weight:600;color:rgba(255,255,255,.35);cursor:pointer;border-bottom:3px solid transparent;display:flex;align-items:center;gap:8px;user-select:none;transition:color .15s}
+.tab:hover{color:rgba(255,255,255,.65)}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tab.t-blue.active{color:#93C5FD;border-bottom-color:#3B82F6}
+.tab.t-orange.active{color:#FCD34D;border-bottom-color:#F59E0B}
+.tab.t-purple.active{color:#C4B5FD;border-bottom-color:#7C3AED}
+.pane{display:none;flex:1;flex-direction:column;overflow:hidden}
+.pane.active{display:flex}
+.confirm-bar{background:#F0FFF8;border-top:2px solid var(--teal);padding:13px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0}
+.confirm-text{font-size:13px;color:#1B5B55;font-weight:500}
+.confirmed{font-size:13px;font-weight:600;color:var(--teal);display:none}
+.confirm-btn{background:var(--teal);color:#fff;border:none;border-radius:100px;padding:9px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+</style></head><body>
+<div class="banner">
+  <div style="display:flex;align-items:center;gap:10px"><span class="b-tag">Activity 1</span><span class="b-sep">/</span><span class="b-title">Reading Level Comparison</span></div>
+  <div class="b-desc">Read all three versions and choose which feels most comfortable. That choice stays for all remaining activities.</div>
+</div>
+<div class="tabs" id="tabs-container"></div>
+<div class="page">
+  <div class="top-bar"><span class="org">National Institutes of Health</span><span style="font-size:12px;color:var(--teal-mid);font-weight:500" id="step-info">Choose the version you enjoy reading most</span></div>
+  <div id="pane-original" class="pane active"><div class="doc-header"><div class="doc-lbl">Health Information Pamphlet</div><h1>Understanding Type 2 Diabetes</h1></div><div class="scroll"><div class="s-lbl">What Is Type 2 Diabetes?</div><p class="p">Type 2 diabetes, the most common type of diabetes, is a disease that occurs when your blood glucose, also called blood sugar, is too high. Blood glucose is your main source of energy and comes mainly from the food you eat. Insulin, a hormone made by the pancreas, helps glucose get into your cells to be used for energy. In type 2 diabetes, your body does not make enough insulin or does not use insulin well. Too much glucose then stays in your blood, and not enough reaches your cells.</p>
+<hr class="divider"><div class="s-lbl">Health Problems Caused by Diabetes</div><p class="p">Over time, having too much glucose in your blood can cause health problems such as heart disease, nerve damage, eye problems, and kidney disease. You are more likely to develop type 2 diabetes if you have a family history of diabetes, are overweight or have obesity, or are 35 or older. Many people with type 2 diabetes have no symptoms, or symptoms can be so mild that people might not even notice them.</p>
+<hr class="divider"><div class="s-lbl">Managing Your Diabetes</div><p class="p">Managing your blood glucose, blood pressure, and cholesterol, and quitting smoking if you smoke, are important ways to manage your type 2 diabetes. Lifestyle changes that include planning healthy meals, limiting calories if you are overweight, and being physically active are also part of managing your diabetes. So is taking any prescribed medicines. Take your medicines as they were prescribed, even if you feel good or have reached your blood glucose, blood pressure, or cholesterol goals. Talk with your health care team if you cannot afford your medicines or if you experience any side effects.</p></div></div>
+<div id="pane-plain" class="pane"><div class="doc-header"><div class="doc-lbl">Health Information Pamphlet</div><h1>Understanding Type 2 Diabetes</h1></div><div class="scroll"><div class="s-lbl">What Is Type 2 Diabetes?</div><p class="p">Type 2 diabetes is a health condition where your blood sugar is too high. Blood sugar, also called glucose, comes from the food you eat. Your body uses a hormone called insulin to move sugar from your blood into your cells, where it is used for energy. In type 2 diabetes, your body does not make enough insulin or does not use it well. When this happens, too much sugar stays in your blood.</p>
+<hr class="divider"><div class="s-lbl">Health Problems Caused by Diabetes</div><p class="p">If your blood sugar stays high for a long time, it can damage your heart, kidneys, eyes, and nerves. You are more likely to develop type 2 diabetes if you have a family member with diabetes, if you are overweight, or if you are 35 or older. Many people do not know they have diabetes because they feel no different at first.</p>
+<hr class="divider"><div class="s-lbl">Managing Your Diabetes</div><p class="p">You can manage type 2 diabetes by eating healthy food, being physically active, and taking any medicines your doctor prescribes. Keep your blood sugar, blood pressure, and cholesterol at healthy levels. If you smoke, quitting will help. Take your medicines every day, even if you feel well. Do not stop taking them without talking to your doctor first. If your medicine is too expensive or causes side effects, tell your health care team.</p></div></div>
+<div id="pane-easy" class="pane"><div class="doc-header"><div class="doc-lbl">Health Information Pamphlet</div><h1>Understanding Type 2 Diabetes</h1></div><div class="scroll"><div class="s-lbl">What Is Type 2 Diabetes?</div><p class="p">Type 2 diabetes is a health condition. It means your blood sugar is too high. Blood sugar comes from the food you eat. Your body uses insulin to move blood sugar into your cells. In type 2 diabetes, insulin does not work well enough. Too much sugar stays in your blood.</p>
+<hr class="divider"><div class="s-lbl">Health Problems Caused by Diabetes</div><p class="p">High blood sugar can damage your body over time. It can affect your heart, kidneys, eyes, and nerves. You are more likely to get diabetes if a family member has it. You are more likely to get it if you are overweight. Many people do not know they have it at first.</p>
+<hr class="divider"><div class="s-lbl">Managing Your Diabetes</div><p class="p">Eat healthy food every day. Move your body regularly. Take your medicine every day, even if you feel well. Do not stop taking your medicine without asking your doctor. If your medicine costs too much or makes you feel unwell, tell your doctor or nurse.</p></div></div>
+
+  <div class="confirm-bar">
+    <span class="confirm-text" id="confirm-text">Which version did you enjoy reading more?</span>
+    <span class="confirmed" id="confirmed-msg"></span>
+    <button class="confirm-btn" id="confirm-btn" onclick="lock()">This is the one I want</button>
+  </div>
+  <div class="action-bar">
+    <button class="btn-back" id="btn-back" onclick="step(-1)" disabled><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back</button>
+    <button class="btn-next" id="btn-next" onclick="step(1)">Next<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+<script>
+var VLAB={original:'Blue Version',plain:'Orange Version',easy:'Purple Version'};
+var VCLS={original:'t-blue',plain:'t-orange',easy:'t-purple'};
+var VCOLOR={original:'#3B82F6',plain:'#F59E0B',easy:'#7C3AED'};
+var FILE_DEFAULT=["original", "plain", "easy"];
+var TABS=(function(){try{var s=localStorage.getItem('a1_tabOrder');if(s){var p=JSON.parse(s);if(Array.isArray(p)&&p.length===3)return p;}}catch(e){}return FILE_DEFAULT;})();
+var cur=TABS[0],locked=false;
+function buildTabs(){
+  var c=document.getElementById('tabs-container');c.innerHTML='';
+  TABS.forEach(function(vk,i){
+    var t=document.createElement('div');
+    t.className='tab '+VCLS[vk]+(i===0?' active':'');t.id='tab-'+vk;
+    t.onclick=function(){sw(vk);};
+    t.innerHTML='<span class="dot" style="background:'+VCOLOR[vk]+'"></span>'+VLAB[vk];
+    c.appendChild(t);
+  });
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('pane-'+TABS[0]).classList.add('active');
+  cur=TABS[0];nav();
+}
+function sw(v){
+  if(locked)return;cur=v;
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+v).classList.add('active');
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('pane-'+v).classList.add('active');
+  nav();
+  document.getElementById('confirm-text').textContent='You are reading the '+VLAB[v]+'. Which version did you enjoy more?';
+}
+function nav(){
+  var idx=TABS.indexOf(cur);
+  document.getElementById('btn-back').disabled=idx===0;
+  document.getElementById('btn-next').textContent=idx===TABS.length-1?'Done':'Next ›';
+}
+function step(d){var idx=TABS.indexOf(cur),n=idx+d;if(n>=0&&n<TABS.length)sw(TABS[n]);}
+function lock(){
+  locked=true;
+  var pid=localStorage.getItem('participantId')||'session';
+  localStorage.setItem('selectedLevel',JSON.stringify(cur));
+  localStorage.setItem(pid+'__selectedLevel',JSON.stringify(cur));
+  document.getElementById('confirm-btn').style.display='none';
+  document.getElementById('confirm-text').style.display='none';
+  var m=document.getElementById('confirmed-msg');m.style.display='block';m.textContent='Locked: '+VLAB[cur];
+}
+buildTabs();
+</script></body></html>

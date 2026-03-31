@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Activity 4: Definitions</title><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC;--gold:#E9A03B;--violet:#6C63AC;--violet-light:#F0EFF9}
+html,body{height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--teal)}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-mid)}
+.b-title{font-size:13px;font-weight:600;color:#fff}
+.b-sep{color:rgba(255,255,255,.2)}
+.b-desc{font-size:11px;color:rgba(255,255,255,.4);max-width:420px;text-align:right;line-height:1.4}
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);display:flex;flex-direction:column;min-height:calc(100vh - 46px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);flex-shrink:0}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+.doc-header{background:var(--navy);padding:18px 40px 22px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.doc-lbl{display:inline-flex;align-items:center;gap:6px;background:rgba(42,157,143,.18);border:1px solid rgba(42,157,143,.4);color:var(--teal-mid);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.doc-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.doc-header h1{font-family:'Lora',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.25}
+.scroll{flex:1;overflow-y:auto;padding:32px 40px 36px}
+.s-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;margin-top:22px}
+.s-head{font-family:'Lora',serif;font-size:19px;font-weight:700;color:var(--navy);padding-bottom:8px;border-bottom:2px solid var(--teal-light);margin-bottom:2px}
+.p{font-family:'Lora',serif;font-size:17px;line-height:1.95;color:var(--text);margin-top:12px}
+.divider{border:none;border-top:1px dashed var(--border);margin:24px 0}
+.action-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:var(--warm);border-top:1px solid var(--border);flex-shrink:0}
+.btn-back{display:flex;align-items:center;gap:8px;background:transparent;color:var(--navy);border:1.5px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-back:disabled{opacity:.3;cursor:default}
+.btn-back svg,.btn-next svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-next{display:flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.sub-nav{background:#162130;display:flex;padding:0 40px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:46px;z-index:299}
+.tab{padding:14px 22px 12px;font-size:13px;font-weight:600;color:rgba(255,255,255,.38);cursor:pointer;border-bottom:3px solid transparent;user-select:none;transition:color .15s}
+.tab:hover{color:rgba(255,255,255,.7)}
+.tab.active{color:#fff;border-bottom-color:var(--teal)}
+.pane-wrap{display:none}.pane-wrap.active{display:flex;flex:1;overflow:hidden}
+.reading-pane{flex:1;overflow-y:auto;padding:32px 40px 36px}
+.def-tap{border-bottom:2px solid var(--teal);cursor:pointer;color:#1A6B66;border-radius:2px 2px 0 0;transition:background .12s}
+.def-tap:hover{background:var(--teal-light)}
+.def-inline{font-family:'DM Sans',sans-serif;font-size:14.5px;color:#5A7C7A;font-style:normal}
+.def-inline::before{content:' ('}
+.def-inline::after{content:')'}
+.def-gloss{border-bottom:1px dotted var(--teal);cursor:pointer;color:#1A6B66}
+.def-gloss.hi{background:var(--teal-light);border-radius:2px;padding:0 2px}
+.gloss-panel{width:260px;border-left:1px solid #C8E8E5;background:#F8FFFE;display:flex;flex-direction:column;flex-shrink:0}
+.gloss-hd{background:var(--navy);padding:13px 16px;flex-shrink:0}
+.gloss-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-mid)}
+.gloss-body{flex:1;overflow-y:auto;padding:14px 16px}
+.ge{padding:8px;margin-bottom:10px;border-bottom:1px solid #D4EEEb;border-radius:4px;transition:background .2s}
+.ge:last-child{border-bottom:none}
+.ge-term{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.ge-plain{font-size:12.5px;color:#444;line-height:1.55}
+.ge-ex{font-size:11.5px;color:var(--muted);margin-top:3px;font-style:italic}
+.doc-note{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.18);z-index:400;display:none}
+.backdrop.show{display:block}
+.popup{position:fixed;z-index:401;background:#fff;border-radius:14px;width:300px;max-width:calc(100vw - 24px);box-shadow:0 12px 40px rgba(0,0,0,.2);display:none;overflow:hidden}
+.popup.show{display:block}
+.popup-hd{background:var(--navy);padding:14px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.popup-tlbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-mid);margin-bottom:3px}
+.popup-term{font-family:'Lora',serif;font-size:18px;font-weight:700;color:#fff}
+.popup-x{background:rgba(255,255,255,.12);border:none;color:#fff;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif}
+.popup-bd{padding:15px 18px}
+.popup-plain{font-size:14.5px;line-height:1.65;color:#2D3748;margin-bottom:6px}
+.popup-ex{font-size:12.5px;color:var(--muted);font-style:italic;margin-bottom:12px}
+.popup-audio{display:flex;align-items:center;gap:7px;background:var(--teal-light);border:none;border-radius:100px;padding:9px 15px;font-size:12.5px;font-weight:600;color:var(--teal);cursor:pointer;font-family:'DM Sans',sans-serif;width:100%}
+.popup-audio svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
+.popup-audio.on{background:var(--teal);color:#fff}
+</style></head><body>
+<div class="banner">
+  <div style="display:flex;align-items:center;gap:10px"><span class="b-tag">Activity 4</span><span class="b-sep">/</span><span class="b-title">Embedded Definitions</span></div>
+  <div class="b-desc">Three ways to look up unfamiliar words. The document stays the same -- only how definitions appear changes.</div>
+</div>
+<div class="sub-nav">
+  <div class="tab active" id="tab-a" onclick="sw('a')">Inline in Text</div>
+  <div class="tab" id="tab-b" onclick="sw('b')">Tap to Define</div>
+  <div class="tab" id="tab-c" onclick="sw('c')">Side Glossary</div>
+</div>
+<div class="page" style="overflow:hidden">
+  <div class="top-bar"><span class="org">Wayne Memorial Hospital</span><span style="font-size:12px;color:var(--teal-mid);font-weight:500" id="step-info">Definitions appear inside the text</span></div>
+  <div class="doc-header" id="doc-hdr"><p class="doc-note">Definitions work best on the original text, so this activity always shows that version.</p></div>
+  <div id="wrap-a" class="pane-wrap active"><div class="reading-pane"><div id="body-a"></div></div></div>
+  <div id="wrap-b" class="pane-wrap"><div class="reading-pane"><div id="body-b"></div><p style="font-size:13px;color:var(--muted);margin-top:20px;padding-top:14px;border-top:1px dashed var(--border)">Tap any underlined word to see what it means.</p></div></div>
+  <div id="wrap-c" class="pane-wrap">
+    <div class="reading-pane"><div id="body-c"></div></div>
+    <div class="gloss-panel"><div class="gloss-hd"><span class="gloss-title">Word List</span></div><div class="gloss-body" id="gloss-body"></div></div>
+  </div>
+  <div class="action-bar">
+    <button class="btn-back" id="btn-back" onclick="step(-1)" disabled><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back</button>
+    <button class="btn-next" id="btn-next" onclick="step(1)">Next<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+<div class="backdrop" id="backdrop" onclick="closePop()"></div>
+<div class="popup" id="popup">
+  <div class="popup-hd"><div><div class="popup-tlbl">Word Defined</div><div class="popup-term" id="pop-term"></div></div><button class="popup-x" onclick="closePop()">&#x2715;</button></div>
+  <div class="popup-bd"><div class="popup-plain" id="pop-plain"></div><div class="popup-ex" id="pop-ex"></div>
+  <button class="popup-audio" id="pop-audio" onclick="toggleAudio()"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg><span id="audio-lbl">Read this definition aloud</span></button>
+  </div>
+</div>
+<script>
+
+const ALL={"original": [{"label": "What You Are Agreeing To", "body": "It is very important to your doctor that you understand and consent to the treatment your doctor is rendering and any surgery your doctor may perform. You should be involved in any and all decisions concerning the surgical procedure. Sign this form only after you understand the procedure, the risks, the alternatives, the risks associated with the alternatives, and all of your questions have been answered."}, {"label": "Risks of the Procedure", "body": "The risks and benefits associated with the procedure have been explained to me. However, I understand there is no certainty that I will achieve these benefits and no guarantee has been made to me regarding the outcome of the procedure. I also authorize the administration of sedation and/or anesthesia as may be deemed advisable or necessary for my comfort, well being and safety. The risks and possible undesirable consequences associated with the procedure have been explained to me including, but not limited to, blood loss, transfusion reactions, infection, heart complications, blood clots, loss of or loss of use of body part or other neurological injury or death."}, {"label": "Your Rights", "body": "In permitting my doctor to perform the procedure, I understand that unforeseen conditions may be revealed that may necessitate change or extension of the original procedure or a different procedure. The reasonable alternatives to the procedure have been explained to me. By signing below, I have had an opportunity to ask the doctor all questions concerning risks, alternatives, and risks of those alternatives."}], "plain": [{"label": "What You Are Agreeing To", "body": "This form asks for your permission to have surgery or a medical procedure. Before you sign, make sure you understand what the procedure is, what the risks are, and what other options you have. Ask any questions you have. Only sign when you feel ready and understand everything."}, {"label": "Risks of the Procedure", "body": "Your doctor has explained the possible risks to you. These can include bleeding, infection, reactions to anaesthesia, blood clots, or other complications. In rare cases, more serious outcomes can occur. No doctor can guarantee a specific result. By signing, you agree to have anaesthesia or sedation if needed to keep you safe and comfortable."}, {"label": "Your Rights", "body": "During the procedure, your doctor may find something unexpected and may need to change the plan. You have been told about other options instead of this procedure. You have the right to ask questions about anything in this form before you sign. You can refuse treatment at any time."}], "easy": [{"label": "What You Are Agreeing To", "body": "This form is asking if you agree to have a procedure or surgery. Ask questions if you do not understand. Only sign when you are ready. You should understand what will happen before you sign."}, {"label": "Risks of the Procedure", "body": "All procedures have some risks. Your doctor has explained the risks to you. Risks can include bleeding, infection, or reactions to medicine. No doctor can promise a specific result. By signing, you agree to medicine that will keep you comfortable during the procedure."}, {"label": "Your Rights", "body": "You have the right to say no to any part of this procedure. You can ask questions at any time. You can change your mind at any time. Your doctor will talk to you before making any big changes to the plan."}]};
+const KP_ALL={"original": ["Sign only after understanding the procedure, risks, alternatives, and having all questions answered", "Risks include blood loss, infection, heart complications, blood clots, and in rare cases death", "No guarantee of outcome; anaesthesia authorised as necessary for safety and comfort", "Unforeseen conditions may require a change to the procedure during surgery"], "plain": ["Only sign when you understand what will happen and your questions are answered", "Risks include bleeding, infection, and reactions to anaesthesia", "No doctor can guarantee a specific result", "You have the right to ask questions and to refuse treatment at any time"], "easy": ["Only sign when you are ready and understand everything", "All procedures have some risks -- your doctor has explained these", "You can say no or change your mind at any time", "Ask questions before you sign"]};
+const DEFS={"sedation": {"term": "Sedation", "plain": "Medicine given to make you feel relaxed and sleepy during a procedure.", "example": "Sedation helps you stay calm and comfortable without feeling pain."}, "anesthesia": {"term": "Anesthesia", "plain": "Medicine that stops you from feeling pain during surgery. It can make you sleep or numb part of your body.", "example": "General anesthesia puts you into a deep sleep so you do not feel anything during the operation."}, "transfusion": {"term": "Transfusion", "plain": "When a patient receives blood or blood products through a tube into their vein.", "example": "If you lose a lot of blood during surgery, you might need a transfusion."}, "alternatives": {"term": "Alternatives", "plain": "Other treatment options besides the one being proposed.", "example": "Your doctor explains the alternatives so you can choose what is right for you."}};
+const EXPLS={"p0": {"what": "Read the form carefully. Ask your doctor or nurse about anything you do not understand. Only sign when you are ready.", "mean": "This form is a legal agreement between you and the hospital. It records that you understand and agree to the procedure.", "why": "Your understanding and agreement are required before any elective procedure can happen. This protects both you and your care team."}, "p1": {"what": "You do not need to do anything right now. Listen to your doctor's explanation of risks and ask any questions you have.", "mean": "This section lists possible things that could go wrong. Most procedures go well, but it is important you know the risks beforehand.", "why": "Being aware of risks helps you watch for warning signs after your procedure and get help quickly if needed."}, "p2": {"what": "If you have more questions after reading this, ask your doctor or nurse before signing. You can say no to the procedure.", "mean": "You have full rights over your own body and healthcare decisions. Signing is voluntary.", "why": "Informed consent protects your right to make decisions about your own care. No one can force you to sign."}};
+const DOC_TITLE="Informed Consent to Surgical Procedure";
+const DOC_TYPE="Consent Form";
+const ORG="Wayne Memorial Hospital";
+const CHAT_WELCOME="Hello. I can help you understand this consent form. What would you like to know?";
+function getLevel(){try{var s=localStorage.getItem('selectedLevel');if(s){var v=JSON.parse(s);if(ALL[v])return v;}}catch(e){}return 'original';}
+function getSecs(){return ALL[getLevel()];}
+function getKP(){return KP_ALL[getLevel()]||KP_ALL.original;}
+function renderHdr(id){var el=document.getElementById(id);if(!el)return;el.innerHTML='<div class="doc-lbl">'+DOC_TYPE+'</div><h1>'+DOC_TITLE+'</h1>';}
+function renderBody(id){var el=document.getElementById(id);if(!el)return;el.innerHTML='';getSecs().forEach(function(sec,i){if(i>0){var hr=document.createElement('hr');hr.className='divider';el.appendChild(hr);}var d=document.createElement('div');d.innerHTML='<div class="s-lbl">'+sec.label+'</div><p class="p">'+sec.body+'</p>';el.appendChild(d);});}
+function renderKP(id,style){var el=document.getElementById(id);if(!el)return;el.innerHTML='';var kp=getKP();if(style==='chips'){var div=document.createElement('div');div.className='chips';kp.forEach(function(k){var sp=document.createElement('span');sp.className='chip';sp.textContent=k;div.appendChild(sp);});el.appendChild(div);}else{var ul=document.createElement('ul');ul.className='kp-list';kp.forEach(function(k){var li=document.createElement('li');li.textContent=k;ul.appendChild(li);});el.appendChild(ul);}}
+function save(key,val){var pid=localStorage.getItem('participantId')||'session';localStorage.setItem(key,JSON.stringify(val));localStorage.setItem(pid+'__'+key,JSON.stringify(val));}
+function updateNav(tabs,cur){var idx=tabs.indexOf(cur);var bb=document.getElementById('btn-back'),bn=document.getElementById('btn-next');if(bb)bb.disabled=(idx===0);if(bn)bn.textContent=(idx===tabs.length-1)?'Done':'Next ›';}
+
+var TABS=['a','b','c'],curMode='a',audioOn=false;
+function inject(body,mode){
+  Object.keys(DEFS).forEach(function(k){
+    var d=DEFS[k];if(!d)return;
+    var re=new RegExp('('+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+    if(mode==='a')body=body.replace(re,function(m){return '<span style="font-style:italic">'+m+'</span><span class="def-inline">'+d.plain+'</span>';});
+    else if(mode==='b')body=body.replace(re,function(m){return '<span class="def-tap" data-k="'+k+'">'+m+'</span>';});
+    else body=body.replace(re,function(m){return '<span class="def-gloss" data-k="'+k+'">'+m+'</span>';});
+  });
+  return body;
+}
+function buildBody(mode){
+  var area=document.getElementById('body-'+mode);if(!area)return;area.innerHTML='';
+  // A4 always uses original for definitions
+  var secs=ALL.original;
+  secs.forEach(function(sec,i){
+    if(i>0){var hr=document.createElement('hr');hr.className='divider';area.appendChild(hr);}
+    var d=document.createElement('div');
+    d.innerHTML='<div class="s-lbl">'+sec.label+'</div><p class="p">'+inject(sec.body,mode)+'</p>';
+    area.appendChild(d);
+  });
+  if(mode==='b')area.addEventListener('click',function(e){var s=e.target.closest('[data-k]');if(s)showPop(e,s.dataset.k);});
+  if(mode==='c')area.addEventListener('click',function(e){var s=e.target.closest('[data-k]');if(s)hlGloss(s.dataset.k);});
+}
+function buildGloss(){
+  var gb=document.getElementById('gloss-body');gb.innerHTML='';
+  Object.keys(DEFS).forEach(function(k){
+    var d=DEFS[k];if(!d)return;
+    var e=document.createElement('div');e.className='ge';e.id='ge-'+k.replace(/\s+/g,'-');
+    e.innerHTML='<div class="ge-term">'+d.term+'</div><div class="ge-plain">'+d.plain+'</div><div class="ge-ex">'+d.example+'</div>';
+    gb.appendChild(e);
+  });
+}
+function hlGloss(k){
+  document.querySelectorAll('.def-gloss.hi').forEach(function(el){el.classList.remove('hi');});
+  document.querySelectorAll('[data-k="'+k+'"]').forEach(function(el){el.classList.add('hi');});
+  var ge=document.getElementById('ge-'+k.replace(/\s+/g,'-'));
+  if(ge){ge.style.background='#DFFAF5';ge.scrollIntoView({behavior:'smooth',block:'nearest'});setTimeout(function(){ge.style.background='';},2000);}
+}
+function init(){
+  renderHdr('doc-hdr');
+  ['a','b','c'].forEach(buildBody);
+  buildGloss();
+  updateNav(TABS,curMode);
+}
+function sw(m){
+  curMode=m;save('choiceDefs',m);
+  TABS.forEach(function(x){document.getElementById('tab-'+x).classList.toggle('active',x===m);document.getElementById('wrap-'+x).classList.toggle('active',x===m);});
+  updateNav(TABS,curMode);closePop();
+  document.getElementById('step-info').textContent={a:'Definitions appear inside the text',b:'Tap any underlined word to see its meaning',c:'Tap any highlighted word to find it in the list'}[m];
+}
+function step(d){var idx=TABS.indexOf(curMode),n=idx+d;if(n>=0&&n<TABS.length)sw(TABS[n]);}
+function showPop(e,k){
+  var d=DEFS[k];if(!d)return;e.stopPropagation();
+  document.getElementById('pop-term').textContent=d.term;
+  document.getElementById('pop-plain').textContent=d.plain;
+  document.getElementById('pop-ex').textContent=d.example||'';
+  var pop=document.getElementById('popup');pop.classList.add('show');document.getElementById('backdrop').classList.add('show');
+  var r=e.target.getBoundingClientRect(),pw=300,ph=240;
+  var left=r.left,top=r.bottom+8;
+  if(left+pw>window.innerWidth-12)left=window.innerWidth-pw-12;
+  if(top+ph>window.innerHeight-12)top=r.top-ph-8;
+  pop.style.left=Math.max(8,left)+'px';pop.style.top=Math.max(8,top)+'px';resetAudio();
+}
+function closePop(){document.getElementById('popup').classList.remove('show');document.getElementById('backdrop').classList.remove('show');resetAudio();}
+function toggleAudio(){
+  if(audioOn){resetAudio();return;}
+  audioOn=true;var btn=document.getElementById('pop-audio');btn.classList.add('on');document.getElementById('audio-lbl').textContent='Playing... tap to stop';
+  var u=new SpeechSynthesisUtterance(document.getElementById('pop-plain').textContent);u.rate=0.82;
+  u.onend=resetAudio;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);
+}
+function resetAudio(){
+  audioOn=false;window.speechSynthesis.cancel();
+  var btn=document.getElementById('pop-audio');if(btn){btn.classList.remove('on');document.getElementById('audio-lbl').textContent='Read this definition aloud';}
+}
+window.addEventListener('load',init);
+</script></body></html>

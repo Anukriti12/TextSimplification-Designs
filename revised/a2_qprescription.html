@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Activity 2: Summary Bar</title><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1B3557;--teal:#2A9D8F;--teal-light:#E8F5F4;--teal-mid:#A8DAD5;--warm:#FAF8F5;--text:#2D3748;--muted:#8896A7;--border:#DDD6CC;--gold:#E9A03B;--violet:#6C63AC;--violet-light:#F0EFF9}
+html,body{height:100%;background:#E0DBD3;font-family:'DM Sans',sans-serif;color:var(--text)}
+.banner{background:#0F1923;padding:10px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;border-bottom:2px solid var(--gold)}
+.b-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#FCD34D}
+.b-title{font-size:13px;font-weight:600;color:#fff}
+.b-sep{color:rgba(255,255,255,.2)}
+.b-desc{font-size:11px;color:rgba(255,255,255,.4);max-width:420px;text-align:right;line-height:1.4}
+.page{max-width:860px;margin:0 auto;background:var(--warm);box-shadow:0 0 60px rgba(0,0,0,.12);display:flex;flex-direction:column;min-height:calc(100vh - 46px)}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;background:var(--navy);flex-shrink:0}
+.org{font-size:12px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.06em;text-transform:uppercase}
+.doc-header{background:var(--navy);padding:18px 40px 22px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.doc-lbl{display:inline-flex;align-items:center;gap:6px;background:rgba(42,157,143,.18);border:1px solid rgba(42,157,143,.4);color:var(--teal-mid);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+.doc-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal)}
+.doc-header h1{font-family:'Lora',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.25}
+.scroll{flex:1;overflow-y:auto;padding:32px 40px 36px}
+.s-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:4px;margin-top:22px}
+.s-head{font-family:'Lora',serif;font-size:19px;font-weight:700;color:var(--navy);padding-bottom:8px;border-bottom:2px solid var(--teal-light);margin-bottom:2px}
+.p{font-family:'Lora',serif;font-size:17px;line-height:1.95;color:var(--text);margin-top:12px}
+.divider{border:none;border-top:1px dashed var(--border);margin:24px 0}
+.action-bar{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:var(--warm);border-top:1px solid var(--border);flex-shrink:0}
+.btn-back{display:flex;align-items:center;gap:8px;background:transparent;color:var(--navy);border:1.5px solid var(--border);border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-back:disabled{opacity:.3;cursor:default}
+.btn-back svg,.btn-next svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-next{display:flex;align-items:center;gap:8px;background:var(--teal);color:#fff;border:none;border-radius:100px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.sub-nav{background:#162130;display:flex;padding:0 40px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:46px;z-index:299;align-items:center;gap:0}
+.tab{padding:14px 22px 12px;font-size:13px;font-weight:600;color:rgba(255,255,255,.38);cursor:pointer;border-bottom:3px solid transparent;user-select:none;transition:color .15s;white-space:nowrap}
+.tab:hover{color:rgba(255,255,255,.7)}
+.tab.active{color:#fff;border-bottom-color:var(--gold)}
+.pane{display:none;flex:1;overflow:hidden;flex-direction:column}
+.pane.active{display:flex}
+.kp-area{background:var(--navy);padding:14px 40px 18px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.kp-list{list-style:none}
+.kp-list li{display:flex;gap:10px;font-size:14px;font-weight:500;color:rgba(255,255,255,.88);line-height:1.55;margin-bottom:7px;padding:3px 0}
+.kp-list li::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:rgba(42,157,143,.22);color:#9EDBD6;border-radius:100px;padding:7px 16px;font-size:13px;font-weight:500;border:1px solid rgba(42,157,143,.4)}
+</style></head><body>
+<div class="banner">
+  <div style="display:flex;align-items:center;gap:10px"><span class="b-tag">Activity 2</span><span class="b-sep">/</span><span class="b-title">Summary Bar</span></div>
+  <div class="b-desc">Three ways to show a summary at the top of the document. The document below stays the same.</div>
+</div>
+<div class="sub-nav">
+  <div class="tab active" id="tab-sa" onclick="sw('sa')">Key Points</div>
+  <div class="tab" id="tab-sb" onclick="sw('sb')">Page Topics</div>
+  <div class="tab" id="tab-sc" onclick="sw('sc')">Start Reading</div>
+</div>
+<div class="page">
+  <div class="top-bar"><span class="org">CHI Fargo Pharmacy</span><span style="font-size:12px;color:var(--teal-mid);font-weight:500" id="step-info">Summary: Key Points</span></div>
+  <div id="pane-sa" class="pane active">
+    <div class="doc-header" id="hdr-sa"></div>
+    <div class="kp-area" id="kp-sa"></div>
+    <div class="scroll"><div id="body-sa"></div></div>
+  </div>
+  <div id="pane-sb" class="pane">
+    <div class="doc-header" id="hdr-sb"></div>
+    <div class="kp-area" id="kp-sb"></div>
+    <div class="scroll"><div id="body-sb"></div></div>
+  </div>
+  <div id="pane-sc" class="pane">
+    <div class="doc-header" id="hdr-sc"></div>
+    <div class="scroll"><div id="body-sc"></div></div>
+  </div>
+  <div class="action-bar">
+    <button class="btn-back" id="btn-back" onclick="step(-1)" disabled><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back</button>
+    <button class="btn-next" id="btn-next" onclick="step(1)">Next<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+<script>
+
+const ALL={"original": [{"label": "What is GLUCOPHAGE used for?", "body": "GLUCOPHAGE (metformin hydrochloride) is a prescription medicine used to improve blood sugar (glucose) control in adults with type 2 diabetes mellitus. GLUCOPHAGE should be used with diet and exercise to improve blood sugar control. GLUCOPHAGE is not for people with type 1 diabetes."}, {"label": "Important Safety Information", "body": "GLUCOPHAGE and GLUCOPHAGE XR can cause a rare but serious condition called lactic acidosis (a build-up of lactic acid in the blood) that can cause death. Lactic acidosis is a medical emergency and must be treated in the hospital. Call your doctor right away if you have any of the following symptoms of lactic acidosis: feel very weak or tired; have unusual (not normal) muscle pain; have trouble breathing; have unexpected or unusual stomach discomfort; feel cold; feel dizzy or lightheaded; or have a slow or irregular heartbeat. Do not take GLUCOPHAGE or GLUCOPHAGE XR if your kidneys are not working properly."}, {"label": "How should I take GLUCOPHAGE?", "body": "Take GLUCOPHAGE exactly as your doctor tells you to take it. Take GLUCOPHAGE with meals. Your doctor may change your dose until your blood sugar is controlled. Do not change your dose unless your doctor tells you to. The usual starting dose of GLUCOPHAGE is 500 mg twice a day or 850 mg once a day. Common side effects of GLUCOPHAGE include diarrhea, nausea, and upset stomach. These side effects generally go away after you take the medicine for a while. Taking your medicine with meals can help reduce these side effects."}], "plain": [{"label": "What is this medicine for?", "body": "Metformin is a prescription medicine that helps control your blood sugar if you have type 2 diabetes. It works best when you also eat healthy food and exercise regularly. Metformin is not used for type 1 diabetes."}, {"label": "Important warning", "body": "Metformin can cause a rare but serious problem called lactic acidosis. This is a build-up of acid in the blood and is a medical emergency. Call your doctor right away if you feel very weak or tired, have unusual muscle pain, have trouble breathing, feel cold, feel dizzy or lightheaded, or notice a slow or irregular heartbeat. Do not take this medicine if your kidneys are not working well."}, {"label": "How to take this medicine", "body": "Take Metformin exactly as your doctor prescribes. Always take it with food, at each meal. Do not change your dose unless your doctor tells you to. The usual starting dose is 500 mg twice a day. Common side effects include diarrhea, nausea, and upset stomach. These usually get better after a few weeks. Taking the medicine with food helps reduce stomach side effects."}], "easy": [{"label": "What is this medicine for?", "body": "This medicine is called Metformin. It helps keep your blood sugar at a healthy level. It is for people with type 2 diabetes. You should also eat healthy food. You should also move your body regularly."}, {"label": "Important warning", "body": "Metformin can cause a serious problem. It is called lactic acidosis. Call your doctor right away if you feel very weak or tired. Call your doctor if your muscles hurt for no reason. Call your doctor if you have trouble breathing. Call your doctor if you feel dizzy or cold. Do not take this medicine if your kidneys are not working well."}, {"label": "How to take this medicine", "body": "Take one Metformin tablet with breakfast. Take one Metformin tablet with dinner. Always take it with food. Do not change how many tablets you take. Only your doctor can change your dose. You might feel sick to your stomach when you first start. This usually gets better after a few weeks."}]};
+const KP_ALL={"original": ["Used with diet and exercise to improve blood sugar control in type 2 diabetes", "Lactic acidosis is rare but serious - call doctor immediately if symptoms occur", "Do not use if kidneys are not working properly", "Take with meals; GI side effects usually resolve with continued use"], "plain": ["Helps control blood sugar in type 2 diabetes - take with food at every meal", "Call your doctor right away if you feel very weak, have muscle pain, or trouble breathing", "Do not take if your kidneys are not working well", "Stomach side effects are common at first and usually improve after a few weeks"], "easy": ["Take one tablet with breakfast and one with dinner", "Always take with food", "Call your doctor if you feel very sick or have muscle pain", "Stomach upset is normal at first and usually gets better"]};
+const DEFS={"lactic acidosis": {"term": "Lactic acidosis", "plain": "A dangerous build-up of acid in the blood. It is a medical emergency.", "example": "Symptoms include extreme tiredness, muscle pain, and trouble breathing."}, "hypoglycemia": {"term": "Hypoglycemia", "plain": "Low blood sugar. This happens when your blood sugar drops too low.", "example": "Signs of low blood sugar include shaking, sweating, and feeling confused."}, "metformin hydrochloride": {"term": "Metformin hydrochloride", "plain": "The full chemical name of Metformin, a medicine for type 2 diabetes.", "example": "Metformin hydrochloride is the active ingredient in GLUCOPHAGE tablets."}, "type 2 diabetes mellitus": {"term": "Type 2 diabetes mellitus", "plain": "A condition where the body cannot properly control blood sugar levels.", "example": "In type 2 diabetes, the body does not make enough insulin or does not use it well."}, "renal impairment": {"term": "Renal impairment", "plain": "When the kidneys are not working as well as they should.", "example": "Metformin should not be taken if you have renal impairment."}};
+const EXPLS={"p0": {"what": "You do not need to do anything right now except read this information. If you take Metformin, keep taking it as your doctor prescribed.", "mean": "This section explains what Metformin is for. It is a medicine for people with type 2 diabetes that helps keep blood sugar at a healthy level.", "why": "Keeping blood sugar under control prevents long-term damage to your heart, kidneys, eyes, and nerves."}, "p1": {"what": "If you feel very weak, have muscle pain, have trouble breathing, feel dizzy, or notice an irregular heartbeat, stop taking the medicine and call your doctor or 911 right away.", "mean": "Lactic acidosis is rare but very serious. It is a build-up of acid in the blood. The symptoms can come on slowly, which is why knowing the warning signs matters.", "why": "If caught early, lactic acidosis can be treated in hospital. Waiting too long can be life-threatening."}, "p2": {"what": "Take one tablet with breakfast and one with dinner. Do not skip doses. Do not take more than your doctor prescribed.", "mean": "Taking Metformin with food reduces the chance of stomach side effects. Your doctor will adjust your dose based on how your blood sugar responds.", "why": "Taking medicine consistently keeps blood sugar stable. Changing your dose without asking your doctor can cause blood sugar to go too high or too low."}};
+const DOC_TITLE="METFORMIN HCl 500 mg Tablets";
+const DOC_TYPE="Prescription Medicine Label";
+const ORG="CHI Fargo Pharmacy";
+const CHAT_WELCOME="Hello. I can help you understand this medicine label. What would you like to know?";
+function getLevel(){try{var s=localStorage.getItem('selectedLevel');if(s){var v=JSON.parse(s);if(ALL[v])return v;}}catch(e){}return 'original';}
+function getSecs(){return ALL[getLevel()];}
+function getKP(){return KP_ALL[getLevel()]||KP_ALL.original;}
+function renderHdr(id){var el=document.getElementById(id);if(!el)return;el.innerHTML='<div class="doc-lbl">'+DOC_TYPE+'</div><h1>'+DOC_TITLE+'</h1>';}
+function renderBody(id){var el=document.getElementById(id);if(!el)return;el.innerHTML='';getSecs().forEach(function(sec,i){if(i>0){var hr=document.createElement('hr');hr.className='divider';el.appendChild(hr);}var d=document.createElement('div');d.innerHTML='<div class="s-lbl">'+sec.label+'</div><p class="p">'+sec.body+'</p>';el.appendChild(d);});}
+function renderKP(id,style){var el=document.getElementById(id);if(!el)return;el.innerHTML='';var kp=getKP();if(style==='chips'){var div=document.createElement('div');div.className='chips';kp.forEach(function(k){var sp=document.createElement('span');sp.className='chip';sp.textContent=k;div.appendChild(sp);});el.appendChild(div);}else{var ul=document.createElement('ul');ul.className='kp-list';kp.forEach(function(k){var li=document.createElement('li');li.textContent=k;ul.appendChild(li);});el.appendChild(ul);}}
+function save(key,val){var pid=localStorage.getItem('participantId')||'session';localStorage.setItem(key,JSON.stringify(val));localStorage.setItem(pid+'__'+key,JSON.stringify(val));}
+function updateNav(tabs,cur){var idx=tabs.indexOf(cur);var bb=document.getElementById('btn-back'),bn=document.getElementById('btn-next');if(bb)bb.disabled=(idx===0);if(bn)bn.textContent=(idx===tabs.length-1)?'Done':'Next ›';}
+
+var TABS=['sa','sb','sc'],cur='sa';
+var LBL={sa:'Summary: Key Points',sb:'Summary: Page Topics',sc:'No Summary -- Start Reading'};
+function init(){
+  ['sa','sb','sc'].forEach(function(id){
+    renderHdr('hdr-'+id);
+    renderBody('body-'+id);
+    if(id==='sa')renderKP('kp-sa','bullets');
+    if(id==='sb')renderKP('kp-sb','chips');
+  });
+  updateNav(TABS,cur);
+}
+function sw(id){
+  cur=id;
+  TABS.forEach(function(t){document.getElementById('tab-'+t).classList.toggle('active',t===id);document.getElementById('pane-'+t).classList.toggle('active',t===id);});
+  save('choiceSummary',id);
+  updateNav(TABS,cur);
+  document.getElementById('step-info').textContent=LBL[id];
+}
+function step(d){var idx=TABS.indexOf(cur),n=idx+d;if(n>=0&&n<TABS.length)sw(TABS[n]);}
+window.addEventListener('load',init);
+</script></body></html>
